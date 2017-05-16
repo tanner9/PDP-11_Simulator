@@ -1,71 +1,64 @@
 class RegisterFile():
      
     def __init__(self,pc=0):
-       
         self.registers = {'R0':0,'R1':0,'R2':0,'R3':0,'R4':0,'R5':0,'R6':0,'R7':pc}
        
     def readReg(self, register, mode):
         
-        self.reg = 'R'+str(register)
+        reg = self.sanitizeInput(register)
         
         if(mode == 2):
-            if((self.reg == 'R0') or (self.reg == 'R1') or (self.reg == 'R2') or (self.reg == 'R3') or (self.reg == 'R4') or (self.reg == 'R5')):
-                self.data = self.registers[self.reg]
-                self.registers[self.reg] = (self.registers[self.reg])+1
-                print( "register contents:",self.registers[self.reg])
-                print("data read:", self.data)
-            else:
-                self.data = self.registers[self.reg]
-                print( "register contents:",self.registers[self.reg])
-                print("data read",self.data)
+            data = self.registers[reg]
+            self.registers[reg] = data+1
         elif(mode == 3):
-            if((self.reg == 'R0') or (self.reg == 'R1') or (self.reg == 'R2') or (self.reg == 'R3') or (self.reg == 'R4') or (self.reg == 'R5')):
-                self.data = self.registers[self.reg]
-                self.registers[self.reg] = (self.registers[self.reg]) + 2
-                print( "register contents:",self.registers[self.reg])
-                print("data read",self.data)
-            else:
-                self.data = self.registers[self.reg]
-                print( "register contents:",self.registers[self.reg])
-                print("data read", self.data)
+            data = self.registers[reg]
+            self.registers[reg] = data + 2
         elif(mode == 4):
-            if((self.reg == 'R0') or (self.reg == 'R1') or (self.reg == 'R2') or (self.reg == 'R3') or (self.reg == 'R4') or (self.reg == 'R5')):
-                self.registers[self.reg] = (self.registers[self.reg]) - 1
-                self.data = self.registers[self.reg]
-                print( "register contents:",self.registers[self.reg])
-                print("data read", self.data)
-            else:
-                self.data = self.registers[self.reg]
-                print( "register contents:",self.registers[self.reg])
-                print("data read",self.data)
+            self.registers[reg] = (self.registers[reg]) - 1
+            data = self.registers[reg]
         elif(mode == 5):
-            if((self.reg == 'R0') or (self.reg == 'R1') or (self.reg == 'R2') or (self.reg == 'R3') or (self.reg == 'R4') or (self.reg == 'R5')):
-                self.registers[self.reg] = (self.registers[self.reg]) - 2
-                self.data = self.registers[self.reg]
-                print( "register contents:",self.registers[self.reg])
-                print("data read:", self.data)
-            else:
-                self.data = self.registers[self.reg]
-                print( "register contents:",self.registers[self.reg])
-                print("data read", self.data)
+            self.registers[reg] = (self.registers[reg]) - 2
+            data = self.registers[reg]
         else:
-            self.data = self.registers[self.reg]
-            print( "register contents:",self.registers[self.reg])
-            print("data read", self.data)
+            data = self.registers[reg]
+        print("Read reg")
+        self.printRegDec(reg)
+        return data
+
+    def writeReg(self,register, data):
+        reg = self.sanitizeInput(register)
+        self.registers[reg] = data
+        print("write reg")
+        self.printRegDec(reg)
         
+    def printRegDec(self,register):
+        reg = self.sanitizeInput(register)
+        print("%s: %d" %(reg, self.registers[reg]))
 
-    def writeReg(self,data):
-        self.registers[self.reg] = data
-        self.d_oct = oct(int(self.registers[self.reg]))
-        print(self.d_oct)
-        print('the contents written into the register:',self.d_oct)
-        
-    def printReg(self,register):
-        self.reg = 'R'+str(register)
-        print ('the register contents are:',oct(int(self.registers[self.reg])))
+    def printRegOct(self,register):
+        reg = self.sanitizeInput(register)
+        print( "%s: %s" %(reg, oct(int(self.registers[reg]))))
+
+    def readPC(self):
+        PC = self.registers['R7']
+        self.registers['R7'] = PC+2
+        print("Read and increment PC")
+        self.printRegDec('R7')
+        return PC
+
+    def sanitizeInput(self, input):
+        if(str(input)[0] == 'R'):
+            return input
+        else:
+            return 'R'+str(input)
 
 
-x=RegisterFile()
-x.readReg(0, 2)
-x.writeReg(23)
-x.printReg(2)
+
+def test():
+    x=RegisterFile()
+    x.writeReg(0, 23)
+    x.readReg(0, 0)
+    x.writeReg(4, 53)
+    x.readReg(4, 2)
+    x.writeReg(6, 17)
+    x.readReg(6, 4)
