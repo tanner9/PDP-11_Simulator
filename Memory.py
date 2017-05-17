@@ -71,15 +71,15 @@ class Memory(object):
             mylist			= m.tolist()
             print (','.join(mylist))'''
 
-#def main():
-a = 655
-b = 5623
-debug = True
-memInstance = Memory()
-memInstance.readFileIntoMemory(debug)
-memInstance.memoryWrite(a, b, debug)
-memInstance.memoryRead(a, debug)
-#main()
+def test():
+    a = 655
+    b = 5623
+    debug = True
+    memInstance = Memory()
+    memInstance.readFileIntoMemory(debug)
+    memInstance.memoryWrite(a, b, debug)
+    memInstance.memoryRead(a, debug)
+#test()
                             
                             
 	

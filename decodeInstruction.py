@@ -1,5 +1,5 @@
 from twoOperandInstruction import *
-from oneHalfOperandInstruction import *
+from nopInstruction import *
 from oneOperandInstruction import *
 from branchInstruction import *
 from zeroOperandInstruction import *
@@ -8,7 +8,7 @@ class decodeStage:
 
 	def decodeInstruction(self,instructionValue):
 		if((instructionValue>>12) == 0x7):
-			instruction = oneHalfOperandInstruction(instructionValue)
+			instruction = nopInstruction()
 		elif((((instructionValue>>11)&0xf) == 0x1) or ((instructionValue>>6) == 3) or ((instructionValue>>6) == 67)):
 			instruction = oneOperandInstruction(instructionValue)
 		elif((instructionValue>>8) == 0):
@@ -80,3 +80,4 @@ def test():
 	i1.printInstructionData()
 	i2.printInstructionData()
 	i3.printInstructionData()
+

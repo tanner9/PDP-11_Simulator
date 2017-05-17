@@ -2,6 +2,7 @@ class oneOperandInstruction:
 
     def __init__(self, instructionValue):
         self.value = instructionValue
+        self.numOperands = 1
         self.mode = (instructionValue>>3)&0x7
         self.reg = instructionValue&0o7
         self.opCode = (instructionValue>>6)&0x1ff
@@ -43,6 +44,15 @@ class oneOperandInstruction:
             self.mnemonic = "SoT"  
         else:
             self.mnemonic = "ERROR"
+
+    def getReg(self):
+        x = []
+        x.append(self.reg)
+        x.append(self.mode)
+        return x
+
+    def getNumOperands(self):
+        return self.numOperands
 
     def printValue(self):
         print("Instruction in decimal: %s" %(self.value))

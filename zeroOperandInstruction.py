@@ -2,6 +2,7 @@ class zeroOperandInstruction:
 
     def __init__(self, instructionValue):
         self.value = instructionValue
+        self.numOperands = 0
         self.opCode = instructionValue
         if(self.opCode == 0):
             self.mnemonic = "HALT"
@@ -22,6 +23,9 @@ class zeroOperandInstruction:
 
     def printMnemonic(self):
         print(self.mnemonic)
+
+    def getNumOperands(self):
+        return self.numOperands
 
     def printInstructionData(self):
         print("Opcode: %d, Op: %s" %(self.opCode, self.mnemonic))
