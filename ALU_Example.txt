@@ -1,0 +1,25 @@
+willow@willow-Inspiron-3521:~/Dropbox/classes/ECE586/Project$ python -i ALU.py 
+>>> new = ALU
+>>> ele = [3,5]
+>>> ele2 = [4,2]
+>>> ary = bytearray(ele)
+>>> ary2 = bytearray(ele2)
+>>> new.execute(new, 'dec', ary)
+52
+>>> new.execute(new, 'add', ary)
+53
+>>> new.execute(new, 'add', ary, ary2)
+119
+>>> new.get_condition(new)
+'0000'
+>>> new.execute(new, 'clr',ary,ary2)
+0
+>>> new.get_condition(new)
+'0100'
+>>> new.execute(new, 'clr',ary)
+0
+>>> new.get_condition(new)
+'0100'
+>>> quit()
+willow@willow-Inspiron-3521:~/Dropbox/classes/ECE586/Project$ 
+
