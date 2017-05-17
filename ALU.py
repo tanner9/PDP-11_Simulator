@@ -333,7 +333,6 @@ class ALU:
             self.byte_integer = (~self.byte_integer + 1 ) # Two's compliment negate
         else:
             self.byte_integer = _HIGH_ORDER_BIT_BYTE
-            
         
         if self.byte_integer is 0: 
             self.__condition_zer = True
@@ -369,7 +368,6 @@ class ALU:
 
         self.__condition_ove  = False
         self.__condition_car  = False
-
         
     def __comb(self):
       
@@ -387,7 +385,6 @@ class ALU:
 
         self.__condition_ove  = False
         self.__condition_car  = True
-
         
     def __asr(self):
         holder = self.word_integer & _HIGH_ORDER_BIT_WORD
@@ -414,7 +411,6 @@ class ALU:
             self.__condition_ove  = True
         else:
             self.__condition_ove  = False
-
             
     def __asl(self):
         self.word_integer = (self.word_integer << 1) & _WORD_MASK
@@ -465,8 +461,7 @@ class ALU:
             self.__condition_ove  = True
         else:
             self.__condition_ove  = False
-
-        
+     
     def __aslb(self):
         self.byte_integer = (self.byte_integer << 1) & _BYTE_MASK
 
@@ -489,8 +484,7 @@ class ALU:
             self.__condition_ove  = True
         else:
             self.__condition_ove  = False
-        
-        
+                
     def __adc(self):
         
         if self.word_integer is 0x7FFF and self.__condition_car:
@@ -836,40 +830,114 @@ class ALU:
         else:
             self.__condition_car = False
         
-        
     def __bis(self):
-        self.__condition_zer  = False
-        self.__condition_neg  = False
-        self.__condition_ove  = False
-        self.__condition_car  = False
+
+        self.word_integer = self.word_integer | self.word_integer_second
+
+        if self.word_integer is 0: 
+            self.__condition_zer = True
+        else:
+            self.__condition_zer = False
+            
+        if self.word_integer & _HIGH_ORDER_BIT_WORD:
+            self.__condition_neg = True
+        else:
+            self.__condition_neg = False
         
-    def __bit(self):
-        self.__condition_zer  = False
-        self.__condition_neg  = False
         self.__condition_ove  = False
-        self.__condition_car  = False
+        
+    def __bit(self):# bit does not change the destination
+
+        holder = self.word_integer | self.word_integer_second
+
+        if holder is 0: 
+            self.__condition_zer = True
+        else:
+            self.__condition_zer = False
+            
+        if holder & _HIGH_ORDER_BIT_WORD:
+            self.__condition_neg = True
+        else:
+            self.__condition_neg = False
+        
+        self.__condition_ove  = False
+        
         
     def __bic(self):
-        self.__condition_zer  = False
-        self.__condition_neg  = False
-        self.__condition_ove  = False
-        self.__condition_car  = False
+    
+        self.word_integer = self.word_integer & ~(self.word_integer_second)
+
+        if self.word_integer is 0: 
+            self.__condition_zer = True
+        else:
+            self.__condition_zer = False
+            
+        if self.word_integer & _HIGH_ORDER_BIT_WORD:
+            self.__condition_neg = True
+        else:
+            self.__condition_neg = False
         
+        self.__condition_ove  = False
+            
     def __bisb(self):
-        self.__condition_zer  = False
-        self.__condition_neg  = False
-        self.__condition_ove  = False
-        self.__condition_car  = False
+
+        self.byte_integer = self.byte_integer | self.byte_integer_second
+
+        if self.byte_integer is 0: 
+            self.__condition_zer = True
+        else:
+            self.__condition_zer = False
+            
+        if self.byte_integer & _HIGH_ORDER_BIT_BYTE:
+            self.__condition_neg = True
+        else:
+            self.__condition_neg = False
         
-    def __bitb(self):
-        self.__condition_zer  = False
-        self.__condition_neg  = False
         self.__condition_ove  = False
-        self.__condition_car  = False
+
+    def __bitb(self):
+
+        holder = self.byte_integer | self.byte_integer_second
+
+        if holder is 0: 
+            self.__condition_zer = True
+        else:
+            self.__condition_zer = False
+            
+        if holder & _HIGH_ORDER_BIT_BYTE:
+            self.__condition_neg = True
+        else:
+            self.__condition_neg = False
+        
+        self.__condition_ove  = False
         
     def __bicb(self):
-        self.__condition_zer  = False
-        self.__condition_neg  = False
-        self.__condition_ove  = False
-        self.__condition_car  = False
+    
+        self.byte_integer = self.byte_integer & ~(self.byte_integer_second)
+
+        if self.byte_integer is 0: 
+            self.__condition_zer = True
+        else:
+            self.__condition_zer = False
+            
+        if self.byte_integer & _HIGH_ORDER_BIT_BYTE:
+            self.__condition_neg = True
+        else:
+            self.__condition_neg = False
         
+        self.__condition_ove  = False
+        '''
+# following code is to ease testing only    
+# odd elements will be the MSB for the inputs on the test function
+new = ALU
+ary = 0
+ary2 = 0
+
+def test(ele1, ele2, ele3, ele4, ary, ary2):
+    
+    elements1 = [ele1, ele2]
+    elements2 = [ele3, ele4]
+    ary = bytearray(elements1)
+    ary2 = bytearray(elements2)
+    
+'''
