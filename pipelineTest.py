@@ -18,7 +18,7 @@ i1.printInstructionData()
 i2.printInstructionData()
 i3.printInstructionData()
 
-data = dataFetch.fetchData(i1, False)
+data = dataFetch.fetchData(i3, True)
 print(data)
 
 instr1 = 0o000332  # swab reg 2, mode 3

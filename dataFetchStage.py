@@ -20,12 +20,12 @@ class dataFetchStage:
 				data = self.mem.memoryRead(effectiveAddress, debug)
 			elif(mode == 6):
 				regAddress = self.regFile.readReg(reg, mode)
-				offset = getImmediate()
+				offset = self.getImmediate(debug)
 				effectiveAddress = regAddress+offset
 				data = self.mem.memoryRead(effectiveAddress, debug)
 			else:
 				regAddress = self.regFile.readReg(reg, mode)
-				offset = getImmediate()
+				offset = self.getImmediate(debug)
 				address = regAddress+offset
 				effectiveAddress = self.mem.memoryRead(address, debug)
 				data = self.mem.memoryRead(effectiveAddress, debug)
@@ -58,9 +58,10 @@ class dataFetchStage:
 
 		return data
 
-	def getImmediate():
-		address = readPC()
-		memoryRead(address, debug)
+	def getImmediate(self, debug):
+		address = self.regFile.readPC()
+		imm = self.mem.memoryRead(address, debug)
+		return imm
 
 def test():
 	mem = Memory()
