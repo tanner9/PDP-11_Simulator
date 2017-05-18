@@ -63,6 +63,9 @@ class oneOperandInstruction:
     def printMnemonic(self):
         print(self.mnemonic)
 
+    def getMnemonic(self):
+        return self.mnemonic
+
     def printInstruction(self):
         print("%s %d" %(self.mnemonic, self.reg))
 

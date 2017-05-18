@@ -42,6 +42,9 @@ class twoOperandInstruction:
     def printMnemonic(self):
         print(self.mnemonic)
 
+    def getMnemonic(self):
+        return self.mnemonic
+
     def getReg(self):
         x = []
         x.append(self.srcReg)

@@ -24,6 +24,9 @@ class zeroOperandInstruction:
     def printMnemonic(self):
         print(self.mnemonic)
 
+    def getMnemonic(self):
+        return self.mnemonic
+
     def getNumOperands(self):
         return self.numOperands
 

@@ -46,6 +46,9 @@ class branchInstruction:
     def printMnemonic(self):
         print(self.mnemonic)
 
+    def getMnemonic(self):
+        return self.mnemonic
+
     def printInstructionData(self):
         print("Opcode: %d, Op: %s, Offset: %d " %(self.opCode, self.mnemonic, self.offset))
 
