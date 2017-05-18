@@ -3,11 +3,12 @@ from Memory import *
 
 class dataFetchStage:
 
-	def __init__(self, mem, regFile):
+	def __init__(self, mem, regFile, debug):
 		self.mem = mem
 		self.regFile = regFile
+		self.debug = debug
 
-	def fetchSingleData(self, reg, mode, debug):
+	def fetchSingleData(self, reg, mode):
 		if(mode == 0):
 			data = self.regFile.readReg(reg, mode)
 		else:
@@ -30,28 +31,28 @@ class dataFetchStage:
 				effectiveAddress = self.mem.memoryRead(address, debug)
 				data = self.mem.memoryRead(effectiveAddress, debug)
 
-			if(debug == True):
+			if(self.debug == True):
 				print("Effective address: %d, data: %d" %(effectiveAddress, data))
 
 		return data
 
-	def fetchData(self, instruction, debug):
+	def fetchData(self, instruction):
 		data = []
 		numOperands = instruction.getNumOperands()
 		if(numOperands == 2):
-			if(debug == True):
+			if(self.debug == True):
 				print("Fetching data for two operand instruction")
 			reg = instruction.getReg()
-			data.append(self.fetchSingleData(reg[0], reg[1], debug))
-			data.append(self.fetchSingleData(reg[2], reg[3], debug))
+			data.append(self.fetchSingleData(reg[0], reg[1]))
+			data.append(self.fetchSingleData(reg[2], reg[3]))
 		elif(numOperands == 1):
-			if(debug == True):
+			if(self.debug == True):
 				print("Fetching data for one operand instruction")
 			reg = instruction.getReg()
-			data.append(self.fetchSingleData(reg[0], reg[1], debug))
+			data.append(self.fetchSingleData(reg[0], reg[1]))
 			data.append(0)
 		else:
-			if(debug == True):
+			if(self.debug == True):
 				print("No data required for current instructions")
 			data.append(0)
 			data.append(0)
@@ -64,10 +65,11 @@ class dataFetchStage:
 		return imm
 
 def test():
-	mem = Memory()
-	regFile = RegisterFile()
-	x = dataFetchStage(mem, regFile)
-	x.fetchSingleData(5, 2, False)
-	x.fetchSingleData(5, 2, False)
-	x.fetchSingleData(5, 4, False)
-	x.fetchSingleData(5, 4, False)
+	debug = False
+	mem = Memory(debug)
+	regFile = RegisterFile(debug)
+	x = dataFetchStage(mem, regFile, debug)
+	x.fetchSingleData(5, 2)
+	x.fetchSingleData(5, 2)
+	x.fetchSingleData(5, 4)
+	x.fetchSingleData(5, 4)

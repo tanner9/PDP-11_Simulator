@@ -1,7 +1,9 @@
 class RegisterFile():
      
-    def __init__(self,pc=0):
+    def __init__(self, debug, pc=0):
         self.registers = {'R0':0,'R1':0,'R2':0,'R3':0,'R4':0,'R5':0,'R6':0,'R7':pc}
+        self.debug = debug
+
        
     def readReg(self, register, mode):
         

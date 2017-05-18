@@ -5,6 +5,7 @@ from ALU import *
 
 MEM_DEBUG = True
 DATA_FETCH_DEBUG = True
+REGFILE_DEBUG = True
 
 def toByteArray(data):
 	operand = bytearray(2)
@@ -13,18 +14,20 @@ def toByteArray(data):
 	return operand
 
 startingAddress = 0
-
-mem = Memory()
-mem.readFileIntoMemory(MEM_DEBUG)
-regFile = RegisterFile()
-dataFetch = dataFetchStage(mem, regFile)
+#initialize all stage
+mem = Memory(MEM_DEBUG)
+mem.readFileIntoMemory()
+regFile = RegisterFile(REGFILE_DEBUG)
+dataFetch = dataFetchStage(mem, regFile, DATA_FETCH_DEBUG)
 decodeStage = decodeStage()
 ALU = ALU()
 
+
+#fetch and execute first instruction
 IR = regFile.readPC()
-instruction = mem.memoryRead(IR, MEM_DEBUG)
+instruction = mem.memoryRead(IR)
 decodedInstruction = decodeStage.decodeInstruction(instruction)
-operands = dataFetch.fetchData(decodedInstruction, DATA_FETCH_DEBUG)
+operands = dataFetch.fetchData(decodedInstruction)
 operand0 = toByteArray(operands[0])
 operand1 = toByteArray(operands[1])
 print("ALU operands: %s & %s; OP: %s" %(operand0, operand1, decodedInstruction.getMnemonic()))
