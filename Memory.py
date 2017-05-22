@@ -73,7 +73,6 @@ def test():
     memInstance.memoryWrite(a, b)
     memInstance.memoryRead(a)
     memInstance.traceWrite(4,34)
-    
-test()
+
                     
 

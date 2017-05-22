@@ -22,14 +22,14 @@ class dataFetchStage:
 				effectiveAddress = self.mem.memoryRead(address)
 				data = self.mem.memoryRead(effectiveAddress)
 			elif(mode == 6):
-				regAddress = self.regFile.readReg(reg, mode)
 				offset = self.getImmediate()
+				regAddress = self.regFile.readReg(reg, mode)
 				offset = twos_comp(offset, 16)
 				effectiveAddress = regAddress+offset
 				data = self.mem.memoryRead(effectiveAddress)
 			else:
-				regAddress = self.regFile.readReg(reg, mode)
 				offset = self.getImmediate()
+				regAddress = self.regFile.readReg(reg, mode)
 				address = regAddress+offset
 				effectiveAddress = self.mem.memoryRead(address)
 				data = self.mem.memoryRead(effectiveAddress)
