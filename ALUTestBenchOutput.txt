@@ -1,0 +1,134 @@
+Python 3.6.0 |Anaconda 4.3.1 (64-bit)| (default, Dec 23 2016, 12:22:00) 
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-1)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> >>> >>> >>> >>> testbench()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'testbench' is not defined
+>quit()>> 
+>>> quit()
+
+Process Python[/home/willow/Dropbox/classes/ECE586/Project/ALU.py] finishedb
+Python 3.6.0 |Anaconda 4.3.1 (64-bit)| (default, Dec 23 2016, 12:22:00) 
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-1)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> >>> >>> >>> >>> testBench()
+mov 0x00FF 0xFF02 ->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 0000
+mov 0x7FFF 0x8002 ->	out_hex: 7FFF 	out_decimal: 32767 condition codes NZVC : 0000
+mov 0x00FF 0x00F2 ->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 0000
+mov 0x7FFF 0x7FF0 ->	out_hex: 7FFF 	out_decimal: 32767 condition codes NZVC : 0000
+mov 0xFF00 0x00FF ->	out_hex: FF00 	out_decimal: 65280 condition codes NZVC : 0000
+mov 0x8000 0x7FFF ->	out_hex: 8000 	out_decimal: 32768 condition codes NZVC : 0000
+mov 0xFF01 0xFF04 ->	out_hex: FF01 	out_decimal: 65281 condition codes NZVC : 0000
+mov 0x8000 0x8002 ->	out_hex: 8000 	out_decimal: 32768 condition codes NZVC : 0000
+mov 0x00FF 0x00FF ->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 0000
+mov 0x00FF 0x0000 ->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 0000
+mov 0xFF02 0x0000 ->	out_hex: FF02 	out_decimal: 65282 condition codes NZVC : 0000
+add 0x00FF 0xFF02 ->	out_hex: 0001 	out_decimal: 00001 condition codes NZVC : 0001
+add 0x7FFF 0x8002 ->	out_hex: 0001 	out_decimal: 00001 condition codes NZVC : 0001
+add 0x00FF 0x00F2 ->	out_hex: 01F1 	out_decimal: 00497 condition codes NZVC : 0000
+add 0x7FFF 0x7FF0 ->	out_hex: FFEF 	out_decimal: 65519 condition codes NZVC : 1010
+add 0xFF00 0x00FF ->	out_hex: FFFF 	out_decimal: 65535 condition codes NZVC : 1000
+add 0x8000 0x7FFF ->	out_hex: FFFF 	out_decimal: 65535 condition codes NZVC : 1000
+add 0xFF01 0xFF04 ->	out_hex: FE05 	out_decimal: 65029 condition codes NZVC : 1001
+add 0x8000 0x8002 ->	out_hex: 0002 	out_decimal: 00002 condition codes NZVC : 0011
+add 0x00FF 0x00FF ->	out_hex: 01FE 	out_decimal: 00510 condition codes NZVC : 0000
+add 0x00FF 0x0000 ->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 0000
+add 0xFF02 0x0000 ->	out_hex: FF02 	out_decimal: 65282 condition codes NZVC : 1000
+sub 0x00FF 0xFF02 ->	out_hex: 01FD 	out_decimal: 00509 condition codes NZVC : 0000
+sub 0x7FFF 0x8002 ->	out_hex: FFFD 	out_decimal: 65533 condition codes NZVC : 1010
+sub 0x00FF 0x00F2 ->	out_hex: 000D 	out_decimal: 00013 condition codes NZVC : 0001
+sub 0x7FFF 0x7FF0 ->	out_hex: 000F 	out_decimal: 00015 condition codes NZVC : 0001
+sub 0xFF00 0x00FF ->	out_hex: FE01 	out_decimal: 65025 condition codes NZVC : 1001
+sub 0x8000 0x7FFF ->	out_hex: 0001 	out_decimal: 00001 condition codes NZVC : 0011
+sub 0xFF01 0xFF04 ->	out_hex: FFFD 	out_decimal: 65533 condition codes NZVC : 1000
+sub 0x8000 0x8002 ->	out_hex: FFFE 	out_decimal: 65534 condition codes NZVC : 1000
+sub 0x00FF 0x00FF ->	out_hex: 0000 	out_decimal: 00000 condition codes NZVC : 0101
+sub 0x00FF 0x0000 ->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 0001
+sub 0xFF02 0x0000 ->	out_hex: FF02 	out_decimal: 65282 condition codes NZVC : 1001
+cmp 0x00FF 0xFF02 ->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 1011
+cmp 0x7FFF 0x8002 ->	out_hex: 7FFF 	out_decimal: 32767 condition codes NZVC : 0001
+cmp 0x00FF 0x00F2 ->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 1000
+cmp 0x7FFF 0x7FF0 ->	out_hex: 7FFF 	out_decimal: 32767 condition codes NZVC : 1000
+cmp 0xFF00 0x00FF ->	out_hex: FF00 	out_decimal: 65280 condition codes NZVC : 0010
+cmp 0x8000 0x7FFF ->	out_hex: 8000 	out_decimal: 32768 condition codes NZVC : 1000
+cmp 0xFF01 0xFF04 ->	out_hex: FF01 	out_decimal: 65281 condition codes NZVC : 0001
+cmp 0x8000 0x8002 ->	out_hex: 8000 	out_decimal: 32768 condition codes NZVC : 0001
+cmp 0x00FF 0x00FF ->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 0101
+cmp 0x00FF 0x0000 ->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 1000
+cmp 0xFF02 0x0000 ->	out_hex: FF02 	out_decimal: 65282 condition codes NZVC : 0011
+bis 0x00FF 0xFF02 ->	out_hex: FFFF 	out_decimal: 65535 condition codes NZVC : 1001
+bis 0x7FFF 0x8002 ->	out_hex: FFFF 	out_decimal: 65535 condition codes NZVC : 1001
+bis 0x00FF 0x00F2 ->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 0001
+bis 0x7FFF 0x7FF0 ->	out_hex: 7FFF 	out_decimal: 32767 condition codes NZVC : 0001
+bis 0xFF00 0x00FF ->	out_hex: FFFF 	out_decimal: 65535 condition codes NZVC : 1001
+bis 0x8000 0x7FFF ->	out_hex: FFFF 	out_decimal: 65535 condition codes NZVC : 1001
+bis 0xFF01 0xFF04 ->	out_hex: FF05 	out_decimal: 65285 condition codes NZVC : 1001
+bis 0x8000 0x8002 ->	out_hex: 8002 	out_decimal: 32770 condition codes NZVC : 1001
+bis 0x00FF 0x00FF ->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 0001
+bis 0x00FF 0x0000 ->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 0001
+bis 0xFF02 0x0000 ->	out_hex: FF02 	out_decimal: 65282 condition codes NZVC : 1001
+bit 0x00FF 0xFF02 ->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 1001
+bit 0x7FFF 0x8002 ->	out_hex: 7FFF 	out_decimal: 32767 condition codes NZVC : 1001
+bit 0x00FF 0x00F2 ->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 0001
+bit 0x7FFF 0x7FF0 ->	out_hex: 7FFF 	out_decimal: 32767 condition codes NZVC : 0001
+bit 0xFF00 0x00FF ->	out_hex: FF00 	out_decimal: 65280 condition codes NZVC : 1001
+bit 0x8000 0x7FFF ->	out_hex: 8000 	out_decimal: 32768 condition codes NZVC : 1001
+bit 0xFF01 0xFF04 ->	out_hex: FF01 	out_decimal: 65281 condition codes NZVC : 1001
+bit 0x8000 0x8002 ->	out_hex: 8000 	out_decimal: 32768 condition codes NZVC : 1001
+bit 0x00FF 0x00FF ->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 0001
+bit 0x00FF 0x0000 ->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 0001
+bit 0xFF02 0x0000 ->	out_hex: FF02 	out_decimal: 65282 condition codes NZVC : 1001
+bic 0x00FF 0xFF02 ->	out_hex: 00FD 	out_decimal: 00253 condition codes NZVC : 0001
+bic 0x7FFF 0x8002 ->	out_hex: 7FFD 	out_decimal: 32765 condition codes NZVC : 0001
+bic 0x00FF 0x00F2 ->	out_hex: 000D 	out_decimal: 00013 condition codes NZVC : 0001
+bic 0x7FFF 0x7FF0 ->	out_hex: 000F 	out_decimal: 00015 condition codes NZVC : 0001
+bic 0xFF00 0x00FF ->	out_hex: FF00 	out_decimal: 65280 condition codes NZVC : 1001
+bic 0x8000 0x7FFF ->	out_hex: 8000 	out_decimal: 32768 condition codes NZVC : 1001
+bic 0xFF01 0xFF04 ->	out_hex: 0001 	out_decimal: 00001 condition codes NZVC : 0001
+bic 0x8000 0x8002 ->	out_hex: 0000 	out_decimal: 00000 condition codes NZVC : 0101
+bic 0x00FF 0x00FF ->	out_hex: 0000 	out_decimal: 00000 condition codes NZVC : 0101
+bic 0x00FF 0x0000 ->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 0001
+bic 0xFF02 0x0000 ->	out_hex: FF02 	out_decimal: 65282 condition codes NZVC : 1001
+clr 0xFF00->	out_hex: 0000 	out_decimal: 00000 condition codes NZVC : 0100
+clr 0x00FF->	out_hex: 0000 	out_decimal: 00000 condition codes NZVC : 0100
+clr 0x0000->	out_hex: 0000 	out_decimal: 00000 condition codes NZVC : 0100
+dec 0xFF00->	out_hex: FEFF 	out_decimal: 65279 condition codes NZVC : 0000
+dec 0x00FF->	out_hex: 00FE 	out_decimal: 00254 condition codes NZVC : 0000
+dec 0x0000->	out_hex: -001 	out_decimal: -0001 condition codes NZVC : 1000
+inc 0xFF00->	out_hex: FF01 	out_decimal: 65281 condition codes NZVC : 0000
+inc 0x00FF->	out_hex: 0100 	out_decimal: 00256 condition codes NZVC : 0000
+inc 0x0000->	out_hex: 0001 	out_decimal: 00001 condition codes NZVC : 0000
+neg 0xFF00->	out_hex: 8000 	out_decimal: 32768 condition codes NZVC : 0011
+neg 0x00FF->	out_hex: -0FF 	out_decimal: -0255 condition codes NZVC : 1001
+neg 0x0000->	out_hex: 0000 	out_decimal: 00000 condition codes NZVC : 0100
+tst 0xFF00->	out_hex: FF00 	out_decimal: 65280 condition codes NZVC : 0000
+tst 0x00FF->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 0000
+tst 0x0000->	out_hex: 0000 	out_decimal: 00000 condition codes NZVC : 0100
+com 0xFF00->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 0001
+com 0x00FF->	out_hex: FF00 	out_decimal: 65280 condition codes NZVC : 0001
+com 0x0000->	out_hex: FFFF 	out_decimal: 65535 condition codes NZVC : 0001
+asr 0xFF00->	out_hex: FF80 	out_decimal: 65408 condition codes NZVC : 1010
+asr 0x00FF->	out_hex: 007F 	out_decimal: 00127 condition codes NZVC : 0011
+asr 0x0000->	out_hex: 0000 	out_decimal: 00000 condition codes NZVC : 0100
+asl 0xFF00->	out_hex: FE00 	out_decimal: 65024 condition codes NZVC : 1001
+asl 0x00FF->	out_hex: 01FE 	out_decimal: 00510 condition codes NZVC : 0000
+asl 0x0000->	out_hex: 0000 	out_decimal: 00000 condition codes NZVC : 0100
+adc 0xFF00->	out_hex: FF00 	out_decimal: 65280 condition codes NZVC : 0000
+adc 0x00FF->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 1000
+adc 0x0000->	out_hex: 0000 	out_decimal: 00000 condition codes NZVC : 0100
+sbc 0xFF00->	out_hex: FF00 	out_decimal: 65279 condition codes NZVC : 0101
+sbc 0x00FF->	out_hex: 00FE 	out_decimal: 00254 condition codes NZVC : 1001
+sbc 0x0000->	out_hex: -001 	out_decimal: -0001 condition codes NZVC : 0101
+rol 0xFF00->	out_hex: FE01 	out_decimal: 65025 condition codes NZVC : 1001
+rol 0x00FF->	out_hex: 01FE 	out_decimal: 00510 condition codes NZVC : 0000
+rol 0x0000->	out_hex: 0000 	out_decimal: 00000 condition codes NZVC : 0100
+ror 0xFF00->	out_hex: 7F80 	out_decimal: 32640 condition codes NZVC : 0000
+ror 0x00FF->	out_hex: 807F 	out_decimal: 32895 condition codes NZVC : 1001
+ror 0x0000->	out_hex: 0000 	out_decimal: 00000 condition codes NZVC : 0100
+swab 0xFF00->	out_hex: 00FF 	out_decimal: 00255 condition codes NZVC : 0100
+swab 0x00FF->	out_hex: 0FF0 	out_decimal: 04080 condition codes NZVC : 0100
+swab 0x0000->	out_hex: 0000 	out_decimal: 00000 condition codes NZVC : 0100
+>>> quit()
+
+Process Python[/home/willow/Dropbox/classes/ECE586/Project/ALU.py] finished
