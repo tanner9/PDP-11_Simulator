@@ -42,10 +42,10 @@ class ALU:
     firstb = bitarray(stringb, endian='big')
     secondb = bitarray(string2b, endian='big')
 
-    word_integer = primary[0]*16 + primary[1]
+    word_integer = primary[0]*256 + primary[1]
     byte_integer = primary[1]
     
-    word_integer_second = secondary[0]*16 + secondary[1]
+    word_integer_second = secondary[0]*256 + secondary[1]
     byte_integer_second = secondary[1]
 
     mod = 0
@@ -54,10 +54,10 @@ class ALU:
         
         self.mod = modifier
 
-        self.word_integer = operand1[0]*16 + operand1[1]
+        self.word_integer = operand1[0]*256 + operand1[1]
         self.byte_integer = operand1[1]
     
-        self.word_integer_second = operand2[0]*16 + operand2[1]
+        self.word_integer_second = operand2[0]*256 + operand2[1]
         self.byte_integer_second = operand2[1]
         
 
@@ -157,6 +157,24 @@ class ALU:
         elif mnemonic is 'bicb':
             self.__bicb(self)
             self.word_integer = primary[0]*16 + byte_integer
+
+        # The final section is for Condition code operators
+        elif mnemonic is 'clc':
+            self.__clc(self)
+        elif mnemonic is 'clv':
+            self.__clv(self)
+        elif mnemonic is 'clz':
+            self.__clz(self)
+        elif mnemonic is 'cln':
+            self.__cln(self)
+        elif mnemonic is 'sec':
+            self.__sec(self)
+        elif mnemonic is 'sev':
+            self.__sev(self)
+        elif mnemonic is 'sez':
+            self.__sez(self)
+        elif mnemonic is 'sen':
+            self.__sen(self)
 
         return self.word_integer
       
@@ -371,7 +389,7 @@ class ALU:
         
     def __comb(self):
       
-        self.byte_integer = (~self.byte_integer)&_BYTE_MASK
+        self.byte_integer = (~self.byte_integer) & _BYTE_MASK
 
         if self.byte_integer is 0: 
             self.__condition_zer = True
@@ -737,11 +755,11 @@ class ALU:
         else:
             self.__condition_car = False
 
-        self.word_integer = holder
+        self.word_integer = holder & _WORD_MASK
         
     def __sub(self):
 
-        holder = self.word_integer - self.word_integer_second
+        holder = (self.word_integer + (~self.word_integer_second + 1)) 
         if holder is 0: 
             self.__condition_zer = True
         else:
@@ -752,23 +770,23 @@ class ALU:
         else:
             self.__condition_neg = False
 
-        if (self.word_integer & _HIGH_ORDER_BIT_WORD) ^ (self.word_integer_second & _HIGH_ORDER_BIT_WORD): 
+        if (self.word_integer & _HIGH_ORDER_BIT_WORD) is (self.word_integer_second & _HIGH_ORDER_BIT_WORD): 
             self.__condition_ove  = False
-        elif (holder & _HIGH_ORDER_BIT_WORD) is (self.word_integer & _HIGH_ORDER_BIT):
+        elif (holder & _HIGH_ORDER_BIT_WORD) is (self.word_integer & _HIGH_ORDER_BIT_WORD):
             self.__condition_ove  = False
         else:
             self.__condition_ove = True
 
-        if holder > _WORD_MASK:
-            self.__condition_car = True
-        else:
+        if holder & 0x10000:
             self.__condition_car = False
+        else:
+            self.__condition_car = True
 
-        self.word_integer = holder
+        self.word_integer = holder & _WORD_MASK
         
     def __cmp(self):
         
-        holder = self.word_integer_second - self.word_integer_second
+        holder = self.word_integer_second + (~self.word_integer + 1)
         if holder is 0: 
             self.__condition_zer = True
         else:
@@ -779,17 +797,17 @@ class ALU:
         else:
             self.__condition_neg = False
 
-        if (self.word_integer & _HIGH_ORDER_BIT_WORD) ^ (self.word_integer_second & _HIGH_ORDER_BIT_WORD): 
+        if (self.word_integer & _HIGH_ORDER_BIT_WORD) is (self.word_integer_second & _HIGH_ORDER_BIT_WORD): 
             self.__condition_ove  = False
         elif (holder & _HIGH_ORDER_BIT_WORD) is (self.word_integer & _HIGH_ORDER_BIT):
             self.__condition_ove  = False
         else:
             self.__condition_ove = True
 
-        if holder > _WORD_MASK:
-            self.__condition_car = True
-        else:
+        if holder & 0x100:
             self.__condition_car = False
+        else:
+            self.__condition_car = True
         
     def __movb(self):
 
@@ -807,7 +825,7 @@ class ALU:
         
     def __cmpb(self):
         
-        holder = self.byte_integer_second - self.byte_integer_second
+        holder = self.byte_integer_second + (~self.byte_integer + 1)
         if holder is 0: 
             self.__condition_zer = True
         else:
@@ -818,17 +836,17 @@ class ALU:
         else:
             self.__condition_neg = False
 
-        if (self.byte_integer & _HIGH_ORDER_BIT_BYTE) ^ (self.byte_integer_second & _HIGH_ORDER_BIT_BYTE): 
+        if (self.byte_integer & _HIGH_ORDER_BIT_BYTE) is (self.byte_integer_second & _HIGH_ORDER_BIT_BYTE): 
             self.__condition_ove  = False
         elif (holder & _HIGH_ORDER_BIT_BYTE) is (self.byte_integer & _HIGH_ORDER_BIT):
             self.__condition_ove  = False
         else:
             self.__condition_ove = True
 
-        if holder > _BYTE_MASK:
-            self.__condition_car = True
-        else:
+        if holder & 0x100:
             self.__condition_car = False
+        else:
+            self.__condition_car = True
         
     def __bis(self):
 
@@ -860,8 +878,7 @@ class ALU:
         else:
             self.__condition_neg = False
         
-        self.__condition_ove  = False
-        
+        self.__condition_ove  = False        
         
     def __bic(self):
     
@@ -926,18 +943,36 @@ class ALU:
             self.__condition_neg = False
         
         self.__condition_ove  = False
-        '''
+
+    def __clc(self):
+        self.__condition_car  = False
+    def __clv(self):
+        self.__condition_ove  = False
+    def __clz(self):
+        self.__condition_zer  = False
+    def __cln(self):
+        self.__condition_neg  = False
+    def __sec(self):
+        self.__condition_car  = True
+    def __sev(self):
+        self.__condition_ove  = True
+    def __sez(self):
+        self.__condition_zer  = True
+    def __sen(self):
+        self.__condition_neg  = True
+
+
+
+    
 # following code is to ease testing only    
 # odd elements will be the MSB for the inputs on the test function
-new = ALU
-ary = 0
-ary2 = 0
+testALU = ALU
 
-def test(ele1, ele2, ele3, ele4, ary, ary2):
+def test( stuff, ele1, ele2, ele3, ele4):
     
     elements1 = [ele1, ele2]
     elements2 = [ele3, ele4]
     ary = bytearray(elements1)
     ary2 = bytearray(elements2)
-    
-'''
+
+    return hex(testALU.execute(testALU, stuff, ary, ary2))

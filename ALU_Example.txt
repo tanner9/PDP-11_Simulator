@@ -23,3 +23,18 @@ willow@willow-Inspiron-3521:~/Dropbox/classes/ECE586/Project$ python -i ALU.py
 >>> quit()
 willow@willow-Inspiron-3521:~/Dropbox/classes/ECE586/Project$ 
 
+---------Example of running test function to more quickly test 
+
+willow@willow-Inspiron-3521:~/Dropbox/classes/ECE586/Project$ python -i ALU.py 
+>>> test('sub', 0x70, 0x00, 0x00, 0x01)
+'0x6fff'
+>>> testALU.get_condition(testALU)
+'0001'
+>>> test('sub', 0x60, 0x00, 0x60, 0x00)
+'0x0'
+>>> testALU.get_condition(testALU)
+'0101'
+>>> test('sub', 0x70, 0x00, 0x80, 0x01)
+'0xefff'
+>>> testALU.get_condition(testALU)
+'1010'

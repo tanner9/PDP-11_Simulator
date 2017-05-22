@@ -8,6 +8,10 @@ class Memory(object):
         def __init__(self, debug):
             self.mem = bytearray(65536)
             self.debug = debug
+            x       = ' '
+            f       = open('ECE586_Trace','w')
+            text    = 'TYPE' +10*x + 'ADDRESS \n'
+            f.write(text)
         
         def readFileIntoMemory(self):
             decode = decodeStage()
@@ -55,23 +59,21 @@ class Memory(object):
             if(self.debug == True):
                 print("MemRead from addr %s. Data = (%d)_10 = (%s)_8" %(address, memReadData, oct(memReadData)))
             return memReadData
-
-        '''def memoryAccessPrint(self, memAddress):
-            m 				= memoryview(bytes(memAddress))   #print word address
-            mylist			= m.tolist()
-            print (','.join(mylist))'''
+        
+        def traceWrite(self,typeOf,address):
+            f       = open('ECE586_Trace','a')
+            f.write('{} {:>18} \n'.format(typeOf, oct(address)))
 
 def test():
     a = 655
     b = 5623
     debug = True
-    memInstance = Memory(debug)
+    memInstance = Memory(debug) 
     memInstance.readFileIntoMemory()
     memInstance.memoryWrite(a, b)
     memInstance.memoryRead(a)
-#test()
-                            
-                            
-	
-	
+    memInstance.traceWrite(4,34)
+    
+test()
+                    
 
