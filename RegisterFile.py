@@ -12,10 +12,10 @@ class RegisterFile():
         print("Before Read")
         self.printRegDec(reg)
 
-        if(mode == 2):
+        if(mode == 2 and reg != "R7"):
             data = self.registers[reg]
             self.registers[reg] = data+1
-        elif(mode == 3):
+        elif(mode == 3 or mode == 2):
             data = self.registers[reg]
             self.registers[reg] = data + 2
         elif(mode == 4):

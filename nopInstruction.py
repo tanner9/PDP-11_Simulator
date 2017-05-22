@@ -3,6 +3,7 @@ class nopInstruction:
     def __init__(self):
         self.mnemonic = "NOP"
         self.numOperands = -1
+        self.type = "nop"
 
     def getReg(self):
         x = []
@@ -22,6 +23,9 @@ class nopInstruction:
 
     def getMnemonic(self):
         return self.mnemonic
+
+    def getType(self):
+        return self.type
 
     def printInstruction(self):
         print("%s" %(self.mnemonic))

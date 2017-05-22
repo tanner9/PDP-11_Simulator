@@ -3,6 +3,7 @@ class oneOperandInstruction:
     def __init__(self, instructionValue):
         self.value = instructionValue
         self.numOperands = 1
+        self.type = "oneOperand"
         self.mode = (instructionValue>>3)&0x7
         self.reg = instructionValue&0o7
         self.opCode = (instructionValue>>6)&0x1ff
@@ -68,6 +69,9 @@ class oneOperandInstruction:
 
     def printInstruction(self):
         print("%s %d" %(self.mnemonic, self.reg))
+
+    def getType(self):
+        return self.type
 
     def printInstructionData(self):
         x = 'W' if (self.size == "word") else 'B'

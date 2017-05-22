@@ -4,6 +4,8 @@ class branchInstruction:
         self.value = instructionValue
         self.opCode = (instructionValue>>8)
         self.offset = instructionValue&0xFF
+        self.type = "branch"
+        self.numOperands = 0
         if(self.opCode == 1):
             self.mnemonic = "BR"
         elif(self.opCode == 2):
@@ -49,8 +51,17 @@ class branchInstruction:
     def getMnemonic(self):
         return self.mnemonic
 
+    def getType(self):
+        return self.type
+
+    def getOffset(self):
+        return self.offset
+
     def printInstructionData(self):
         print("Opcode: %d, Op: %s, Offset: %d " %(self.opCode, self.mnemonic, self.offset))
+
+    def getNumOperands(self):
+        return self.numOperands
 
 def test():
     instr1 = (0b00000011<<8) + 57   # beq, offset 57

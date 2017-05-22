@@ -1,3 +1,4 @@
+from decodeInstruction import * # used for debug
 
 #FIXME think about adding simpler print functions like printWord(address) and printByte(address). Someone may want a simple statement 
 #instead of all of the print statements currently in memoryRead. 
@@ -9,6 +10,7 @@ class Memory(object):
             self.debug = debug
         
         def readFileIntoMemory(self):
+            decode = decodeStage()
             filename = "test.ascii"
             startAddressLine = ""
             pos = 0
@@ -24,11 +26,13 @@ class Memory(object):
                         self.mem[pos+1]	= (tempLine>>8)&0xff
                         pos        += 2
                         if(self.debug == True):
-                            print(tempLine)       
+                            print(pos-2, ": ", line[1:])
+                            decode.decodeInstruction(tempLine).printInstructionData()   
             if(startAddressLine == ""):
-                startingAddress = input('Enter the starting address: ')
+                self.startingAddress = input('Enter the starting address: ')
             else:
-                startingAddress = startAddressLine 
+                self.startingAddress = startAddressLine 
+
  
         #FIXME Don't shift incoming address. Assume incoming address is 16 bits already. If some is using a word address it can be shifted before the call to memory.
         #FIXME Combine print statements. Something like "writing word x into mem[y]" and "Writing byte x into mem[y]"
@@ -39,7 +43,12 @@ class Memory(object):
             if(self.debug == True):
                 print("MemWrite to addr %s. Data = (%d)_10 = (%s)_8" %(address, memWriteData, oct(memWriteData)))
 
+        def getStartingAddress(self):
+            return self.startingAddress
+
         def memoryRead(self, address):
+            if(self.debug):
+                print("Attempting to read from address %d" %(address))
             LowerByte	 	= self.mem[address]
             HigherByte	    = self.mem[address+1]
             memReadData     = int((HigherByte << 8)|LowerByte) 

@@ -3,6 +3,7 @@ class twoOperandInstruction:
     def __init__(self,instructionValue):
         self.value = instructionValue
         self.numOperands = 2
+        self.type = "twoOperand"
         self.dstMode = (instructionValue>>3)&0x7
         self.dstReg = instructionValue&0x7
         self.srcMode = (instructionValue>>9)&0x7
@@ -45,6 +46,9 @@ class twoOperandInstruction:
     def getMnemonic(self):
         return self.mnemonic
 
+    def getDstMode(self):
+        return self.dstMode
+
     def getReg(self):
         x = []
         x.append(self.srcReg)
@@ -55,6 +59,9 @@ class twoOperandInstruction:
 
     def getNumOperands(self):
         return self.numOperands
+
+    def getType(self):
+        return self.type
 
     def printInstruction(self):
         print("%s %d, %d" %(self.mnemonic, self.dstReg, self.srcReg))
