@@ -1,7 +1,6 @@
 
 
 import math
-from bitarray import bitarray
     
 # Use these for bit position
 _N = 8
@@ -29,18 +28,6 @@ class ALU:
     
     primary = bytearray(elements)
     secondary = bytearray(elements2) 
-    # These are the word size version of the byte arrays in stings
-    string = "{:08b}".format(primary[1]) + "{:08b}".format(primary[0])
-    string2 = "{:08b}".format(secondary[1]) + "{:08b}".format(secondary[0])
-    # These are the one byte version of the byte arrays in strings
-    stringb = "{:08b}".format(primary[0])
-    string2b = "{:08b}".format(secondary[1])
-    # The word sized bit arrays
-    first = bitarray(string, endian='big')
-    second = bitarray(string2, endian='big')
-    # The byte sized bit array
-    firstb = bitarray(stringb, endian='big')
-    secondb = bitarray(string2b, endian='big')
 
     word_integer = primary[0]*256 + primary[1]
     byte_integer = primary[1]
@@ -134,6 +121,8 @@ class ALU:
 
         elif mnem_lower == 'add':
             self.__add(self)
+        elif mnem_lower == 'mov':
+            self.__mov(self)
         elif mnem_lower == 'sub':
             self.__sub(self)
         elif mnem_lower == 'cmp':
@@ -198,7 +187,6 @@ class ALU:
     # From here on out I am defining all of the assembly code instruction functions
 
     def __clr(self):
-        self.first.setall(False)
         self.word_integer = 0
         
         self.__condition_zer  = True
@@ -302,7 +290,6 @@ class ALU:
         self.__condition_car  = True
 
     def __clrb(self):
-        self.firstb.setall(False)
         self.byte_integer = 0
 
         self.__condition_zer  = True
@@ -977,7 +964,7 @@ def test( stuff, ele1, ele2, ele3, ele4):
     ary = bytearray(elements1)
     ary2 = bytearray(elements2)
 
-    print('\tout_hex:', format(testALU.execute(testALU, stuff, ary, ary2), '04X'), "\tout_decimal:", format(testALU.execute(testALU, stuff, ary, ary2),'05d'),'condition codes NZVC :', testALU.get_condition(testALU))
+    print('\tout_hex:', format(testALU.execute(testALU, stuff, ary, ary2), '04X'), "\tout_decimal:", format(testALU.execute(testALU, stuff, ary, ary2),'05d'),'\tcondition codes NZVC :', testALU.get_condition(testALU))
     
 instructionsOneOperand = ['clr', 'dec', 'inc', 'neg', 'tst', 'com', 'asr', 'asl', 'adc', 'sbc', 'rol', 'ror', 'swab'] 
 instructionsTwoOperand = ['mov', 'add', 'sub', 'cmp', 'bis', 'bit', 'bic']   
