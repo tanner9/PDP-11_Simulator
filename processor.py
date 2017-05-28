@@ -33,6 +33,7 @@ branchStage = branchStage(BRANCH_DEBUG)
 PC = regFile.readPC()
 IR = mem.memoryRead(PC)
 decodedInstruction = decodeStage.decodeInstruction(IR)
+decodeStage.instructionCount(decodedInstruction)
 operands = dataFetch.fetchData(decodedInstruction)
 numOperands = operands[0]
 operand0 = toByteArray(operands[1])
@@ -48,6 +49,7 @@ if(decodedInstruction.getType() != "branch"):
 			regFile.writeReg(writeBackAddress, result)
 		else:
 			mem.memoryWrite(writeBackAddress, result)
+			mem.traceWrite(1, writeBackAddress)
 else:
 	op = decodedInstruction.getMnemonic()
 	offset = decodedInstruction.getOffset()
@@ -55,6 +57,7 @@ else:
 	branchTrue = branchStage.checkBranch(op, condition)
 	if(branchTrue == True):
 		PC = regFile.readReg(7)
+		mem.traceWrite(2, PC)
 		regFile.writeReg(7, PC+offset)
 
 
