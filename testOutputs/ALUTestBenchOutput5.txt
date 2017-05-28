@@ -1,0 +1,410 @@
+-------------------- Word Operations ---------------------
+------------ Double Operand Instructions ----------
+
+-------------------------------------------------------------------------------
+mov 0x00FF 0xFF02 ->	out_hex: 00FF 	Flags NZVC : 0001
+mov 0x7FFF 0x8002 ->	out_hex: 7FFF 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+mov 0x00FF 0x00F2 ->	out_hex: 00FF 	Flags NZVC : 0001
+mov 0x7FFF 0x7FF0 ->	out_hex: 7FFF 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+mov 0xFF00 0x00FF ->	out_hex: FF00 	Flags NZVC : 1001
+mov 0x8000 0x7FFF ->	out_hex: 8000 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+mov 0xFF01 0xFF04 ->	out_hex: FF01 	Flags NZVC : 1001
+mov 0x8000 0x8002 ->	out_hex: 8000 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+mov 0x00FF 0x00FF ->	out_hex: 00FF 	Flags NZVC : 0001
+mov 0x00FF 0x0000 ->	out_hex: 00FF 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+mov 0xFF02 0x0000 ->	out_hex: FF02 	Flags NZVC : 1001
+mov 0x0000 0x0000 ->	out_hex: 0000 	Flags NZVC : 0101
+-------------------------------------------------------------------------------
+add 0x00FF 0xFF02 ->	out_hex: 0001 	Flags NZVC : 0001
+add 0x7FFF 0x8002 ->	out_hex: 0001 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+add 0x00FF 0x00F2 ->	out_hex: 01F1 	Flags NZVC : 0000
+add 0x7FFF 0x7FF0 ->	out_hex: FFEF 	Flags NZVC : 1010
+-------------------------------------------------------------------------------
+add 0xFF00 0x00FF ->	out_hex: FFFF 	Flags NZVC : 1000
+add 0x8000 0x7FFF ->	out_hex: FFFF 	Flags NZVC : 1000
+-------------------------------------------------------------------------------
+add 0xFF01 0xFF04 ->	out_hex: FE05 	Flags NZVC : 1001
+add 0x8000 0x8002 ->	out_hex: 0002 	Flags NZVC : 0011
+-------------------------------------------------------------------------------
+add 0x00FF 0x00FF ->	out_hex: 01FE 	Flags NZVC : 0000
+add 0x00FF 0x0000 ->	out_hex: 00FF 	Flags NZVC : 0000
+-------------------------------------------------------------------------------
+add 0xFF02 0x0000 ->	out_hex: FF02 	Flags NZVC : 1000
+add 0x0000 0x0000 ->	out_hex: 0000 	Flags NZVC : 0100
+-------------------------------------------------------------------------------
+sub 0x00FF 0xFF02 ->	out_hex: 01FD 	Flags NZVC : 0001
+sub 0x7FFF 0x8002 ->	out_hex: FFFD 	Flags NZVC : 1011
+-------------------------------------------------------------------------------
+sub 0x00FF 0x00F2 ->	out_hex: 000D 	Flags NZVC : 0000
+sub 0x7FFF 0x7FF0 ->	out_hex: 000F 	Flags NZVC : 0000
+-------------------------------------------------------------------------------
+sub 0xFF00 0x00FF ->	out_hex: FE01 	Flags NZVC : 1000
+sub 0x8000 0x7FFF ->	out_hex: 0001 	Flags NZVC : 0010
+-------------------------------------------------------------------------------
+sub 0xFF01 0xFF04 ->	out_hex: FFFD 	Flags NZVC : 1001
+sub 0x8000 0x8002 ->	out_hex: FFFE 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+sub 0x00FF 0x00FF ->	out_hex: 0000 	Flags NZVC : 0100
+sub 0x00FF 0x0000 ->	out_hex: 00FF 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+sub 0xFF02 0x0000 ->	out_hex: FF02 	Flags NZVC : 1001
+sub 0x0000 0x0000 ->	out_hex: 0000 	Flags NZVC : 0101
+-------------------------------------------------------------------------------
+cmp 0x00FF 0xFF02 ->(result-> 0x1fe03)	out_hex: 00FF 	Flags NZVC : 1010
+cmp 0x7FFF 0x8002 ->(result-> 0x10003)	out_hex: 7FFF 	Flags NZVC : 0000
+-------------------------------------------------------------------------------
+cmp 0x00FF 0x00F2 ->(result-> 0xfff3)	out_hex: 00FF 	Flags NZVC : 1001
+cmp 0x7FFF 0x7FF0 ->(result-> 0xfff1)	out_hex: 7FFF 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+cmp 0xFF00 0x00FF ->(result-> 0x1ff)	out_hex: FF00 	Flags NZVC : 0011
+cmp 0x8000 0x7FFF ->(result-> 0xffff)	out_hex: 8000 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+cmp 0xFF01 0xFF04 ->(result-> 0x10003)	out_hex: FF01 	Flags NZVC : 0000
+cmp 0x8000 0x8002 ->(result-> 0x10002)	out_hex: 8000 	Flags NZVC : 0000
+-------------------------------------------------------------------------------
+cmp 0x00FF 0x00FF ->(result-> 0x10000)	out_hex: 00FF 	Flags NZVC : 0000
+cmp 0x00FF 0x0000 ->(result-> 0xff01)	out_hex: 00FF 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+cmp 0xFF02 0x0000 ->(result-> 0xfe)	out_hex: FF02 	Flags NZVC : 0011
+cmp 0x0000 0x0000 ->(result-> 0x0)	out_hex: 0000 	Flags NZVC : 0101
+-------------------------------------------------------------------------------
+bis 0x00FF 0xFF02 ->	out_hex: FFFF 	Flags NZVC : 1001
+bis 0x7FFF 0x8002 ->	out_hex: FFFF 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+bis 0x00FF 0x00F2 ->	out_hex: 00FF 	Flags NZVC : 0001
+bis 0x7FFF 0x7FF0 ->	out_hex: 7FFF 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+bis 0xFF00 0x00FF ->	out_hex: FFFF 	Flags NZVC : 1001
+bis 0x8000 0x7FFF ->	out_hex: FFFF 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+bis 0xFF01 0xFF04 ->	out_hex: FF05 	Flags NZVC : 1001
+bis 0x8000 0x8002 ->	out_hex: 8002 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+bis 0x00FF 0x00FF ->	out_hex: 00FF 	Flags NZVC : 0001
+bis 0x00FF 0x0000 ->	out_hex: 00FF 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+bis 0xFF02 0x0000 ->	out_hex: FF02 	Flags NZVC : 1001
+bis 0x0000 0x0000 ->	out_hex: 0000 	Flags NZVC : 0101
+-------------------------------------------------------------------------------
+bit 0x00FF 0xFF02 ->(result-> 0x2)	out_hex: 00FF 	Flags NZVC : 0001
+bit 0x7FFF 0x8002 ->(result-> 0x2)	out_hex: 7FFF 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+bit 0x00FF 0x00F2 ->(result-> 0xf2)	out_hex: 00FF 	Flags NZVC : 0001
+bit 0x7FFF 0x7FF0 ->(result-> 0x7ff0)	out_hex: 7FFF 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+bit 0xFF00 0x00FF ->(result-> 0x0)	out_hex: FF00 	Flags NZVC : 0101
+bit 0x8000 0x7FFF ->(result-> 0x0)	out_hex: 8000 	Flags NZVC : 0101
+-------------------------------------------------------------------------------
+bit 0xFF01 0xFF04 ->(result-> 0xff00)	out_hex: FF01 	Flags NZVC : 1001
+bit 0x8000 0x8002 ->(result-> 0x8000)	out_hex: 8000 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+bit 0x00FF 0x00FF ->(result-> 0xff)	out_hex: 00FF 	Flags NZVC : 0001
+bit 0x00FF 0x0000 ->(result-> 0x0)	out_hex: 00FF 	Flags NZVC : 0101
+-------------------------------------------------------------------------------
+bit 0xFF02 0x0000 ->(result-> 0x0)	out_hex: FF02 	Flags NZVC : 0101
+bit 0x0000 0x0000 ->(result-> 0x0)	out_hex: 0000 	Flags NZVC : 0101
+-------------------------------------------------------------------------------
+bic 0x00FF 0xFF02 ->	out_hex: 00FD 	Flags NZVC : 0001
+bic 0x7FFF 0x8002 ->	out_hex: 7FFD 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+bic 0x00FF 0x00F2 ->	out_hex: 000D 	Flags NZVC : 0001
+bic 0x7FFF 0x7FF0 ->	out_hex: 000F 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+bic 0xFF00 0x00FF ->	out_hex: FF00 	Flags NZVC : 1001
+bic 0x8000 0x7FFF ->	out_hex: 8000 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+bic 0xFF01 0xFF04 ->	out_hex: 0001 	Flags NZVC : 0001
+bic 0x8000 0x8002 ->	out_hex: 0000 	Flags NZVC : 0101
+-------------------------------------------------------------------------------
+bic 0x00FF 0x00FF ->	out_hex: 0000 	Flags NZVC : 0101
+bic 0x00FF 0x0000 ->	out_hex: 00FF 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+bic 0xFF02 0x0000 ->	out_hex: FF02 	Flags NZVC : 1001
+bic 0x0000 0x0000 ->	out_hex: 0000 	Flags NZVC : 0101
+-------------------------------------------------------------------------------
+
+------------ Single Operand Instructions ----------
+
+-------------------------------------------------------------------------------
+clr 0xFF00->	out_hex: 0000 	Flags NZVC : 0100
+clr 0x00FF->	out_hex: 0000 	Flags NZVC : 0100
+clr 0x0000->	out_hex: 0000 	Flags NZVC : 0100
+clr 0xFFFF->	out_hex: 0000 	Flags NZVC : 0100
+clr 0x0005->	out_hex: 0000 	Flags NZVC : 0100
+clr 0xA000->	out_hex: 0000 	Flags NZVC : 0100
+-------------------------------------------------------------------------------
+dec 0xFF00->	out_hex: FEFF 	Flags NZVC : 1001
+dec 0x00FF->	out_hex: 00FE 	Flags NZVC : 0001
+dec 0x0000->	out_hex: FFFF 	Flags NZVC : 1001
+dec 0xFFFF->	out_hex: FFFE 	Flags NZVC : 1001
+dec 0x0005->	out_hex: 0004 	Flags NZVC : 0001
+dec 0xA000->	out_hex: 9FFF 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+inc 0xFF00->	out_hex: FF01 	Flags NZVC : 1001
+inc 0x00FF->	out_hex: 0100 	Flags NZVC : 0001
+inc 0x0000->	out_hex: 0001 	Flags NZVC : 0001
+inc 0xFFFF->	out_hex: 0000 	Flags NZVC : 0101
+inc 0x0005->	out_hex: 0006 	Flags NZVC : 0001
+inc 0xA000->	out_hex: A001 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+neg 0xFF00->	out_hex: 0100 	Flags NZVC : 0001
+neg 0x00FF->	out_hex: FF01 	Flags NZVC : 1001
+neg 0x0000->	out_hex: 0000 	Flags NZVC : 0100
+neg 0xFFFF->	out_hex: 0001 	Flags NZVC : 0001
+neg 0x0005->	out_hex: FFFB 	Flags NZVC : 1001
+neg 0xA000->	out_hex: 6000 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+tst 0xFF00->	out_hex: FF00 	Flags NZVC : 1000
+tst 0x00FF->	out_hex: 00FF 	Flags NZVC : 0000
+tst 0x0000->	out_hex: 0000 	Flags NZVC : 0100
+tst 0xFFFF->	out_hex: FFFF 	Flags NZVC : 1000
+tst 0x0005->	out_hex: 0005 	Flags NZVC : 0000
+tst 0xA000->	out_hex: A000 	Flags NZVC : 1000
+-------------------------------------------------------------------------------
+com 0xFF00->	out_hex: 00FF 	Flags NZVC : 0001
+com 0x00FF->	out_hex: FF00 	Flags NZVC : 1001
+com 0x0000->	out_hex: FFFF 	Flags NZVC : 1001
+com 0xFFFF->	out_hex: 0000 	Flags NZVC : 0101
+com 0x0005->	out_hex: FFFA 	Flags NZVC : 1001
+com 0xA000->	out_hex: 5FFF 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+asr 0xFF00->	out_hex: FF80 	Flags NZVC : 1010
+asr 0x00FF->	out_hex: 007F 	Flags NZVC : 0011
+asr 0x0000->	out_hex: 0000 	Flags NZVC : 0100
+asr 0xFFFF->	out_hex: FFFF 	Flags NZVC : 1001
+asr 0x0005->	out_hex: 0002 	Flags NZVC : 0000
+asr 0xA000->	out_hex: D000 	Flags NZVC : 1010
+-------------------------------------------------------------------------------
+asl 0xFF00->	out_hex: FE00 	Flags NZVC : 1001
+asl 0x00FF->	out_hex: 01FE 	Flags NZVC : 0000
+asl 0x0000->	out_hex: 0000 	Flags NZVC : 0100
+asl 0xFFFF->	out_hex: FFFE 	Flags NZVC : 1001
+asl 0x0005->	out_hex: 000A 	Flags NZVC : 0000
+asl 0xA000->	out_hex: 4000 	Flags NZVC : 0000
+-------------------------------------------------------------------------------
+adc 0xFF00->	out_hex: FF01 	Flags NZVC : 1000
+adc 0x00FF->	out_hex: 0100 	Flags NZVC : 0000
+adc 0x0000->	out_hex: 0001 	Flags NZVC : 0000
+adc 0xFFFF->	out_hex: 0000 	Flags NZVC : 0101
+adc 0x0005->	out_hex: 0006 	Flags NZVC : 0000
+adc 0xA000->	out_hex: A001 	Flags NZVC : 1000
+-------------------------------------------------------------------------------
+sbc 0xFF00->	out_hex: FEFF 	Flags NZVC : 1000
+sbc 0x00FF->	out_hex: 00FE 	Flags NZVC : 0000
+sbc 0x0000->	out_hex: FFFF 	Flags NZVC : 1000
+sbc 0xFFFF->	out_hex: FFFE 	Flags NZVC : 1000
+sbc 0x0005->	out_hex: 0004 	Flags NZVC : 0000
+sbc 0xA000->	out_hex: 9FFF 	Flags NZVC : 1000
+-------------------------------------------------------------------------------
+rol 0xFF00->	out_hex: FE01 	Flags NZVC : 1001
+rol 0x00FF->	out_hex: 01FE 	Flags NZVC : 0000
+rol 0x0000->	out_hex: 0000 	Flags NZVC : 0100
+rol 0xFFFF->	out_hex: FFFF 	Flags NZVC : 1001
+rol 0x0005->	out_hex: 000A 	Flags NZVC : 0000
+rol 0xA000->	out_hex: 4001 	Flags NZVC : 0011
+-------------------------------------------------------------------------------
+ror 0xFF00->	out_hex: 7F80 	Flags NZVC : 0000
+ror 0x00FF->	out_hex: 807F 	Flags NZVC : 1001
+ror 0x0000->	out_hex: 0000 	Flags NZVC : 0100
+ror 0xFFFF->	out_hex: FFFF 	Flags NZVC : 1001
+ror 0x0005->	out_hex: 8002 	Flags NZVC : 1010
+ror 0xA000->	out_hex: 5000 	Flags NZVC : 0000
+-------------------------------------------------------------------------------
+swab 0xFF00->	out_hex: 00FF 	Flags NZVC : 1000
+swab 0x00FF->	out_hex: FF00 	Flags NZVC : 0100
+swab 0x0000->	out_hex: 0000 	Flags NZVC : 0100
+swab 0xFFFF->	out_hex: FFFF 	Flags NZVC : 1000
+swab 0x0005->	out_hex: 0500 	Flags NZVC : 0100
+swab 0xA000->	out_hex: 00A0 	Flags NZVC : 1000
+>>> testBenchByte()
+
+-------------------- Byte Operations ---------------------
+------------ Double Operand Instructions ----------
+
+-------------------------------------------------------------------------------
+movb 0x220F 0x22F2 ->	out_hex: 220F 	Flags NZVC : 0001
+movb 0x227F 0x2282 ->	out_hex: 227F 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+movb 0x220F 0x2232 ->	out_hex: 220F 	Flags NZVC : 0001
+movb 0x227F 0x2270 ->	out_hex: 227F 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+movb 0x22F0 0x220F ->	out_hex: 22F0 	Flags NZVC : 1001
+movb 0x2280 0x227F ->	out_hex: 2280 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+movb 0x22F1 0x22F4 ->	out_hex: 22F1 	Flags NZVC : 1001
+movb 0x2280 0x2282 ->	out_hex: 2280 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+movb 0x220F 0x220F ->	out_hex: 220F 	Flags NZVC : 0001
+movb 0x220F 0x2200 ->	out_hex: 220F 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+movb 0x22F2 0x2200 ->	out_hex: 22F2 	Flags NZVC : 1001
+movb 0x2200 0x2200 ->	out_hex: 2200 	Flags NZVC : 0101
+-------------------------------------------------------------------------------
+bisb 0x220F 0x22F2 ->	out_hex: 22FF 	Flags NZVC : 1001
+bisb 0x227F 0x2282 ->	out_hex: 22FF 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+bisb 0x220F 0x2232 ->	out_hex: 223F 	Flags NZVC : 0001
+bisb 0x227F 0x2270 ->	out_hex: 227F 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+bisb 0x22F0 0x220F ->	out_hex: 22FF 	Flags NZVC : 1001
+bisb 0x2280 0x227F ->	out_hex: 22FF 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+bisb 0x22F1 0x22F4 ->	out_hex: 22F5 	Flags NZVC : 1001
+bisb 0x2280 0x2282 ->	out_hex: 2282 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+bisb 0x220F 0x220F ->	out_hex: 220F 	Flags NZVC : 0001
+bisb 0x220F 0x2200 ->	out_hex: 220F 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+bisb 0x22F2 0x2200 ->	out_hex: 22F2 	Flags NZVC : 1001
+bisb 0x2200 0x2200 ->	out_hex: 2200 	Flags NZVC : 0101
+-------------------------------------------------------------------------------
+cmpb 0x220F 0x22F2 ->(result-> 0x1e3)	out_hex: 220F 	Flags NZVC : 1010
+cmpb 0x227F 0x2282 ->(result-> 0x103)	out_hex: 227F 	Flags NZVC : 0000
+-------------------------------------------------------------------------------
+cmpb 0x220F 0x2232 ->(result-> 0x123)	out_hex: 220F 	Flags NZVC : 0000
+cmpb 0x227F 0x2270 ->(result-> 0xf1)	out_hex: 227F 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+cmpb 0x22F0 0x220F ->(result-> 0x10f)	out_hex: 22F0 	Flags NZVC : 0000
+cmpb 0x2280 0x227F ->(result-> 0xff)	out_hex: 2280 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+cmpb 0x22F1 0x22F4 ->(result-> 0x103)	out_hex: 22F1 	Flags NZVC : 0000
+cmpb 0x2280 0x2282 ->(result-> 0x102)	out_hex: 2280 	Flags NZVC : 0000
+-------------------------------------------------------------------------------
+cmpb 0x220F 0x220F ->(result-> 0x100)	out_hex: 220F 	Flags NZVC : 0000
+cmpb 0x220F 0x2200 ->(result-> 0xf1)	out_hex: 220F 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+cmpb 0x22F2 0x2200 ->(result-> 0xe)	out_hex: 22F2 	Flags NZVC : 0011
+cmpb 0x2200 0x2200 ->(result-> 0x0)	out_hex: 2200 	Flags NZVC : 0101
+-------------------------------------------------------------------------------
+bitb 0x220F 0x22F2 ->(result-> 0x2)	out_hex: 220F 	Flags NZVC : 0001
+bitb 0x227F 0x2282 ->(result-> 0x2)	out_hex: 227F 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+bitb 0x220F 0x2232 ->(result-> 0x2)	out_hex: 220F 	Flags NZVC : 0001
+bitb 0x227F 0x2270 ->(result-> 0x70)	out_hex: 227F 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+bitb 0x22F0 0x220F ->(result-> 0xf0)	out_hex: 22F0 	Flags NZVC : 1001
+bitb 0x2280 0x227F ->(result-> 0x0)	out_hex: 2280 	Flags NZVC : 0101
+-------------------------------------------------------------------------------
+bitb 0x22F1 0x22F4 ->(result-> 0xf0)	out_hex: 22F1 	Flags NZVC : 1001
+bitb 0x2280 0x2282 ->(result-> 0x80)	out_hex: 2280 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+bitb 0x220F 0x220F ->(result-> 0xf)	out_hex: 220F 	Flags NZVC : 0001
+bitb 0x220F 0x2200 ->(result-> 0x0)	out_hex: 220F 	Flags NZVC : 0101
+-------------------------------------------------------------------------------
+bitb 0x22F2 0x2200 ->(result-> 0x0)	out_hex: 22F2 	Flags NZVC : 0101
+bitb 0x2200 0x2200 ->(result-> 0x0)	out_hex: 2200 	Flags NZVC : 0101
+-------------------------------------------------------------------------------
+bicb 0x220F 0x22F2 ->	out_hex: 220D 	Flags NZVC : 0001
+bicb 0x227F 0x2282 ->	out_hex: 227D 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+bicb 0x220F 0x2232 ->	out_hex: 220D 	Flags NZVC : 0001
+bicb 0x227F 0x2270 ->	out_hex: 220F 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+bicb 0x22F0 0x220F ->	out_hex: 2200 	Flags NZVC : 0101
+bicb 0x2280 0x227F ->	out_hex: 2280 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+bicb 0x22F1 0x22F4 ->	out_hex: 2201 	Flags NZVC : 0001
+bicb 0x2280 0x2282 ->	out_hex: 2200 	Flags NZVC : 0101
+-------------------------------------------------------------------------------
+bicb 0x220F 0x220F ->	out_hex: 2200 	Flags NZVC : 0101
+bicb 0x220F 0x2200 ->	out_hex: 220F 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+bicb 0x22F2 0x2200 ->	out_hex: 22F2 	Flags NZVC : 1001
+bicb 0x2200 0x2200 ->	out_hex: 2200 	Flags NZVC : 0101
+-------------------------------------------------------------------------------
+
+------------ Single Operand Instructions ----------
+
+-------------------------------------------------------------------------------
+clrb 0x22F0->	out_hex: 2200 	Flags NZVC : 0100
+clrb 0x220F->	out_hex: 2200 	Flags NZVC : 0100
+clrb 0x2200->	out_hex: 2200 	Flags NZVC : 0100
+clrb 0x22FF->	out_hex: 2200 	Flags NZVC : 0100
+clrb 0x2205->	out_hex: 2200 	Flags NZVC : 0100
+clrb 0x22A0->	out_hex: 2200 	Flags NZVC : 0100
+-------------------------------------------------------------------------------
+decb 0x22F0->	out_hex: 22EF 	Flags NZVC : 1001
+decb 0x220F->	out_hex: 220E 	Flags NZVC : 0001
+decb 0x2200->	out_hex: 22FF 	Flags NZVC : 1001
+decb 0x22FF->	out_hex: 22FE 	Flags NZVC : 1001
+decb 0x2205->	out_hex: 2204 	Flags NZVC : 0001
+decb 0x22A0->	out_hex: 229F 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+incb 0x22F0->	out_hex: 22F1 	Flags NZVC : 1001
+incb 0x220F->	out_hex: 2210 	Flags NZVC : 0001
+incb 0x2200->	out_hex: 2201 	Flags NZVC : 0001
+incb 0x22FF->	out_hex: 2200 	Flags NZVC : 0101
+incb 0x2205->	out_hex: 2206 	Flags NZVC : 0001
+incb 0x22A0->	out_hex: 22A1 	Flags NZVC : 1001
+-------------------------------------------------------------------------------
+negb 0x22F0->	out_hex: 2210 	Flags NZVC : 0001
+negb 0x220F->	out_hex: 22F1 	Flags NZVC : 1001
+negb 0x2200->	out_hex: 2200 	Flags NZVC : 0100
+negb 0x22FF->	out_hex: 2201 	Flags NZVC : 0001
+negb 0x2205->	out_hex: 22FB 	Flags NZVC : 1001
+negb 0x22A0->	out_hex: 2260 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+tstb 0x22F0->	out_hex: 22F0 	Flags NZVC : 1000
+tstb 0x220F->	out_hex: 220F 	Flags NZVC : 0000
+tstb 0x2200->	out_hex: 2200 	Flags NZVC : 0100
+tstb 0x22FF->	out_hex: 22FF 	Flags NZVC : 1000
+tstb 0x2205->	out_hex: 2205 	Flags NZVC : 0000
+tstb 0x22A0->	out_hex: 22A0 	Flags NZVC : 1000
+-------------------------------------------------------------------------------
+comb 0x22F0->	out_hex: 220F 	Flags NZVC : 0001
+comb 0x220F->	out_hex: 22F0 	Flags NZVC : 1001
+comb 0x2200->	out_hex: 22FF 	Flags NZVC : 1001
+comb 0x22FF->	out_hex: 2200 	Flags NZVC : 0101
+comb 0x2205->	out_hex: 22FA 	Flags NZVC : 1001
+comb 0x22A0->	out_hex: 225F 	Flags NZVC : 0001
+-------------------------------------------------------------------------------
+asrb 0x22F0->	out_hex: 22F8 	Flags NZVC : 1010
+asrb 0x220F->	out_hex: 2207 	Flags NZVC : 0011
+asrb 0x2200->	out_hex: 2200 	Flags NZVC : 0100
+asrb 0x22FF->	out_hex: 22FF 	Flags NZVC : 1001
+asrb 0x2205->	out_hex: 2202 	Flags NZVC : 0000
+asrb 0x22A0->	out_hex: 22D0 	Flags NZVC : 1010
+-------------------------------------------------------------------------------
+aslb 0x22F0->	out_hex: 22E0 	Flags NZVC : 1001
+aslb 0x220F->	out_hex: 221E 	Flags NZVC : 0000
+aslb 0x2200->	out_hex: 2200 	Flags NZVC : 0100
+aslb 0x22FF->	out_hex: 22FE 	Flags NZVC : 1001
+aslb 0x2205->	out_hex: 220A 	Flags NZVC : 0000
+aslb 0x22A0->	out_hex: 2240 	Flags NZVC : 0000
+-------------------------------------------------------------------------------
+adcb 0x22F0->	out_hex: 22F1 	Flags NZVC : 1000
+adcb 0x220F->	out_hex: 2210 	Flags NZVC : 0000
+adcb 0x2200->	out_hex: 2201 	Flags NZVC : 0000
+adcb 0x22FF->	out_hex: 2200 	Flags NZVC : 0101
+adcb 0x2205->	out_hex: 2206 	Flags NZVC : 0000
+adcb 0x22A0->	out_hex: 22A1 	Flags NZVC : 1000
+-------------------------------------------------------------------------------
+sbcb 0x22F0->	out_hex: 22EF 	Flags NZVC : 1000
+sbcb 0x220F->	out_hex: 220E 	Flags NZVC : 0000
+sbcb 0x2200->	out_hex: 22FF 	Flags NZVC : 1000
+sbcb 0x22FF->	out_hex: 22FE 	Flags NZVC : 1000
+sbcb 0x2205->	out_hex: 2204 	Flags NZVC : 0000
+sbcb 0x22A0->	out_hex: 229F 	Flags NZVC : 1000
+-------------------------------------------------------------------------------
+rolb 0x22F0->	out_hex: 22E1 	Flags NZVC : 1001
+rolb 0x220F->	out_hex: 221E 	Flags NZVC : 0000
+rolb 0x2200->	out_hex: 2200 	Flags NZVC : 0100
+rolb 0x22FF->	out_hex: 22FF 	Flags NZVC : 1001
+rolb 0x2205->	out_hex: 220A 	Flags NZVC : 0000
+rolb 0x22A0->	out_hex: 2241 	Flags NZVC : 0011
+-------------------------------------------------------------------------------
+rorb 0x22F0->	out_hex: 2278 	Flags NZVC : 0000
+rorb 0x220F->	out_hex: 2287 	Flags NZVC : 1001
+rorb 0x2200->	out_hex: 2200 	Flags NZVC : 0100
+rorb 0x22FF->	out_hex: 22FF 	Flags NZVC : 1001
+rorb 0x2205->	out_hex: 2282 	Flags NZVC : 1010
+rorb 0x22A0->	out_hex: 2250 	Flags NZVC : 0000
+>>> quit()
+
+Process Python[/home/willow/Dropbox/classes/ECE586/Project/ALUByte.py] finished
