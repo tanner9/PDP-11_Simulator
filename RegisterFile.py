@@ -1,8 +1,11 @@
+from Memory import *
+
 class RegisterFile():
      
-    def __init__(self, debug, pc=0):
+    def __init__(self, debug, mem, pc=0):
         self.registers = {'R0':0,'R1':0,'R2':0,'R3':0,'R4':0,'R5':0,'R6':0,'R7':pc}
         self.debug = debug
+        self.mem = mem
 
        
     def readReg(self, register, mode):
@@ -44,8 +47,9 @@ class RegisterFile():
         reg = self.sanitizeInput(register)
         print( "%s: %s" %(reg, oct(int(self.registers[reg]))))
 
-    def readPC(self):
+   def readPC(self):
         PC = self.registers['R7']
+        self.mem.traceWrite(2, PC)
         self.registers['R7'] = PC+2
         print("Read and increment PC")
         self.printRegDec('R7')
