@@ -17,22 +17,26 @@ class dataFetchStage:
 			if(mode == 1 or mode == 2 or mode == 4):
 				effectiveAddress = self.regFile.readReg(reg, mode)
 				data = self.mem.memoryRead(effectiveAddress)
+				self.mem.traceWrite(0, effectiveAddress)
 			elif(mode == 3 or mode == 5):
 				address = self.regFile.readReg(reg, mode)
 				effectiveAddress = self.mem.memoryRead(address)
 				data = self.mem.memoryRead(effectiveAddress)
+				self.mem.traceWrite(0, effectiveAddress)
 			elif(mode == 6):
 				offset = self.getImmediate()
 				regAddress = self.regFile.readReg(reg, mode)
 				offset = twos_comp(offset, 16)
 				effectiveAddress = regAddress+offset
 				data = self.mem.memoryRead(effectiveAddress)
+				self.mem.traceWrite(0, effectiveAddress)
 			else:
 				offset = self.getImmediate()
 				regAddress = self.regFile.readReg(reg, mode)
 				address = regAddress+offset
 				effectiveAddress = self.mem.memoryRead(address)
 				data = self.mem.memoryRead(effectiveAddress)
+				self.mem.traceWrite(0, effectiveAddress)
 
 			self.lastAddress = effectiveAddress
 			if(self.debug == True):
@@ -67,11 +71,13 @@ class dataFetchStage:
 	def getImmediate(self):
 		address = self.regFile.readPC()
 		imm = self.mem.memoryRead(address)
+		self.mem.traceWrite(0, address)
 		return imm
 
 	def getLastAddress(self):
 		if(self.debug == True):
 			print("Fetched effective address: %d for write back" %(self.lastAddress))
+			self.mem.traceWrite(1, self.lastAddress)
 		return self.lastAddress
 
 def test():
