@@ -20,7 +20,7 @@ startingAddress = 0
 #initialize all stage
 mem = Memory(MEM_DEBUG)
 mem.readFileIntoMemory()
-regFile = RegisterFile(REGFILE_DEBUG)
+regFile = RegisterFile(REGFILE_DEBUG, mem)
 regFile.writeReg(7, int(mem.getStartingAddress()))
 dataFetch = dataFetchStage(mem, regFile, DATA_FETCH_DEBUG)
 decodeStage = decodeStage()
