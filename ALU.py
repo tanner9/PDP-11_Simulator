@@ -1,7 +1,6 @@
 
 
 import math
-from bitarray import bitarray
     
 # Use these for bit position
 _N = 8
@@ -15,6 +14,10 @@ _HIGH_ORDER_BIT_WORD = 0x8000
 _HIGH_ORDER_BIT_BYTE = 0x80
 _LOW_ORDER_BIT = 0x01
 
+# ------------- This flag causes additional output 
+# ------------- It causes the operations to display internal values
+DEBUG_ON = True
+
 class ALU:
     
     __condition_zer = False
@@ -24,23 +27,11 @@ class ALU:
     __condition_code = 0
 
     # The next are for testing. They will be replaced by input.
-    elements = [5, 23]
+    elements = [0, 0]
     elements2 = [0, 0]
     
     primary = bytearray(elements)
     secondary = bytearray(elements2) 
-    # These are the word size version of the byte arrays in stings
-    string = "{:08b}".format(primary[1]) + "{:08b}".format(primary[0])
-    string2 = "{:08b}".format(secondary[1]) + "{:08b}".format(secondary[0])
-    # These are the one byte version of the byte arrays in strings
-    stringb = "{:08b}".format(primary[0])
-    string2b = "{:08b}".format(secondary[1])
-    # The word sized bit arrays
-    first = bitarray(string, endian='big')
-    second = bitarray(string2, endian='big')
-    # The byte sized bit array
-    firstb = bitarray(stringb, endian='big')
-    secondb = bitarray(string2b, endian='big')
 
     word_integer = primary[0]*256 + primary[1]
     byte_integer = primary[1]
@@ -50,7 +41,7 @@ class ALU:
 
     mod = 0
     
-    def execute(self, mnemonic, operand1, operand2 = secondary, modifier = 0):
+    def execute(self, mnemonic, operand1 = primary, operand2 = secondary, modifier = 0):
         
         self.mod = modifier
 
@@ -89,51 +80,53 @@ class ALU:
         elif mnem_lower == 'ror':
             self.__ror(self)
         elif mnem_lower == 'swab':
-            self.word_integer = operand1[1]*16 + operand1[0] # Just re-initialized on reverse order
-
+            self.word_integer = operand1[1]*256 + operand1[0] # Just re-initialized on reverse order
+            self.__swab(self)
         # From here on out I have to re-initialize since the functions will only use the last byte
 
         elif mnem_lower == 'decb':
             self.__decb(self)
-            self.word_integer = primary[0]*16 + byte_integer
+            self.word_integer = operand1[0]*256 + self.byte_integer
         elif mnem_lower == 'clrb':
             self.__clrb(self)
-            self.word_integer = primary[0]*16 + byte_integer
+            self.word_integer = operand1[0]*256 + self.byte_integer
         elif mnem_lower == 'incb':
             self.__incb(self)
-            self.word_integer = primary[0]*16 + byte_integer
+            self.word_integer = operand1[0]*256 + self.byte_integer
         elif mnem_lower == 'negb':
             self.__negb(self)
-            self.word_integer = primary[0]*16 + byte_integer
+            self.word_integer = operand1[0]*256 + self.byte_integer
         elif mnem_lower == 'tstb':
             self.__tstb(self)
-            self.word_integer = primary[0]*16 + byte_integer
+            self.word_integer = operand1[0]*256 + self.byte_integer
         elif mnem_lower == 'comb':
             self.__comb(self)
-            self.word_integer = primary[0]*16 + byte_integer
+            self.word_integer = operand1[0]*256 + self.byte_integer
         elif mnem_lower == 'asrb':
             self.__asrb(self)
-            self.word_integer = primary[0]*16 + byte_integer
+            self.word_integer = operand1[0]*256 + self.byte_integer
         elif mnem_lower == 'aslb':
             self.__aslb(self)
-            self.word_integer = primary[0]*16 + byte_integer
+            self.word_integer = operand1[0]*256 + self.byte_integer
         elif mnem_lower == 'adcb':
             self.__adcb(self)
-            self.word_integer = primary[0]*16 + byte_integer
+            self.word_integer = operand1[0]*256 + self.byte_integer
         elif mnem_lower == 'sbcb':
             self.__sbcb(self)
-            self.word_integer = primary[0]*16 + byte_integer
+            self.word_integer = operand1[0]*256 + self.byte_integer
         elif mnem_lower == 'rolb':
             self.__rolb(self)
-            self.word_integer = primary[0]*16 + byte_integer
+            self.word_integer = operand1[0]*256 + self.byte_integer
         elif mnem_lower == 'rorb':
             self.__rorb(self)
-            self.word_integer = primary[0]*16 + byte_integer
+            self.word_integer = operand1[0]*256 + self.byte_integer
 
         # Double operand instructions
 
         elif mnem_lower == 'add':
             self.__add(self)
+        elif mnem_lower == 'mov':
+            self.__mov(self)
         elif mnem_lower == 'sub':
             self.__sub(self)
         elif mnem_lower == 'cmp':
@@ -146,19 +139,21 @@ class ALU:
             self.__bic(self)
 
         # From here on out I have to re-initialize word_integer, since the functions will only use the last byte
-      
+
+        elif mnem_lower == 'movb':
+            self.__movb(self)
         elif mnem_lower == 'cmpb':
             self.__cmpb(self)
-            self.word_integer = primary[0]*16 + byte_integer
+            self.word_integer = operand1[0]*256 + self.byte_integer
         elif mnem_lower == 'bisb':
             self.__bisb(self)
-            self.word_integer = primary[0]*16 + byte_integer
+            self.word_integer = operand1[0]*256 + self.byte_integer
         elif mnem_lower == 'bitb':
             self.__bitb(self)
-            self.word_integer = primary[0]*16 + byte_integer
+            self.word_integer = operand1[0]*256 + self.byte_integer
         elif mnem_lower == 'bicb':
             self.__bicb(self)
-            self.word_integer = primary[0]*16 + byte_integer
+            self.word_integer = operand1[0]*256 + self.byte_integer
 
         # The final section is for Condition code operators
         elif mnem_lower == 'clc':
@@ -198,7 +193,6 @@ class ALU:
     # From here on out I am defining all of the assembly code instruction functions
 
     def __clr(self):
-        self.first.setall(False)
         self.word_integer = 0
         
         self.__condition_zer  = True
@@ -207,64 +201,62 @@ class ALU:
         self.__condition_car  = False
         
     def __dec(self):
-        self.word_integer = self.word_integer -1
+        self.word_integer = (self.word_integer -1) & _WORD_MASK
 
         if self.word_integer == 0: 
             self.__condition_zer = True
         else:
             self.__condition_zer = False
             
-        if self.word_integer < 0:
+        if self.word_integer & _HIGH_ORDER_BIT_WORD:
             self.__condition_neg = True
         else:
             self.__condition_neg = False
             
-        if self.word_integer == _HIGH_ORDER_BIT_WORD: # That is in octal
+        if self.word_integer == 0x7FFF: 
             self.__condition_ove = True 
         else:
             self.__condition_ove = False
         
     def __inc(self):
 
-        self.word_integer = self.word_integer + 1
+        self.word_integer = (self.word_integer + 1) & _WORD_MASK
 
         if self.word_integer == 0: 
             self.__condition_zer = True
         else:
             self.__condition_zer = False
             
-        if self.word_integer < 0:
+        if self.word_integer & _HIGH_ORDER_BIT_WORD:
             self.__condition_neg = True
         else:
             self.__condition_neg = False
             
-        if self.word_integer == 0x7FFF: # again that is in octal
+        if self.word_integer == _HIGH_ORDER_BIT_WORD: 
             self.__condition_ove = True 
         else:
             self.__condition_ove = False
             
     def __neg(self):
-        if self.word_integer < _HIGH_ORDER_BIT_WORD:
-            self.word_integer = (~self.word_integer + 1 ) # Two's compliment negate
-        else:
-            self.word_integer = _HIGH_ORDER_BIT_WORD
+
+        self.word_integer = (~self.word_integer + 1 ) & _WORD_MASK # Two's compliment negate
             
         if self.word_integer == 0: 
             self.__condition_zer = True
         else:
             self.__condition_zer = False
             
-        if self.word_integer < 0:
+        if self.word_integer & _HIGH_ORDER_BIT_WORD:
             self.__condition_neg = True
         else:
             self.__condition_neg = False
             
-        if self.word_integer == _HIGH_ORDER_BIT_WORD: # again that is in octal
+        if self.word_integer == _HIGH_ORDER_BIT_WORD:
             self.__condition_ove = True 
         else:
             self.__condition_ove = False
 
-        if self.word_integer == 0: # again that is in octal
+        if self.word_integer == 0: 
             self.__condition_car = False 
         else:
             self.__condition_car = True
@@ -276,7 +268,7 @@ class ALU:
         else:
             self.__condition_zer = False
             
-        if self.word_integer < 0:
+        if self.word_integer & _HIGH_ORDER_BIT_WORD:
             self.__condition_neg = True
         else:
             self.__condition_neg = False
@@ -286,14 +278,14 @@ class ALU:
         
     def __com(self):
 
-        self.word_integer = (~self.word_integer)&_WORD_MASK
+        self.word_integer = (~self.word_integer) & _WORD_MASK
 
         if self.word_integer == 0: 
             self.__condition_zer = True
         else:
             self.__condition_zer = False
             
-        if self.word_integer < 0:
+        if self.word_integer & _HIGH_ORDER_BIT_WORD:
             self.__condition_neg = True
         else:
             self.__condition_neg = False
@@ -302,7 +294,6 @@ class ALU:
         self.__condition_car  = True
 
     def __clrb(self):
-        self.firstb.setall(False)
         self.byte_integer = 0
 
         self.__condition_zer  = True
@@ -312,48 +303,8 @@ class ALU:
         
     def __decb(self):
 
-        self.byte_integer = self.byte_integer - 1
+        self.byte_integer = (self.byte_integer -1) & _BYTE_MASK
 
-        if self.byte_integer == 0: 
-            self.__condition_zer = True
-        else:
-            self.__condition_zer = False
-            
-        if self.byte_integer < 0:
-            self.__condition_neg = True
-        else:
-            self.__condition_neg = False
-            
-        if self.byte_integer == 31:
-            self.__condition_ove = True 
-        else:
-            self.__condition_ove = False
-            
-    def __incb(self):
-
-        self.byte_integer = self.byte_integer + 1
-
-        if self.byte_integer == 0: 
-            self.__condition_zer = True
-        else:
-            self.__condition_zer = False
-            
-        if self.byte_integer < 0:
-            self.__condition_neg = True
-        else:
-            self.__condition_neg = False
-            
-        if self.byte_integer == 31:
-            self.__condition_ove = True 
-        else:
-            self.__condition_ove = False
-            
-    def __negb(self):
-        if self.byte_integer < _HIGH_ORDER_BIT_BYTE:
-            self.byte_integer = (~self.byte_integer + 1 ) # Two's compliment negate
-        else:
-            self.byte_integer = _HIGH_ORDER_BIT_BYTE
-        
         if self.byte_integer == 0: 
             self.__condition_zer = True
         else:
@@ -364,12 +315,51 @@ class ALU:
         else:
             self.__condition_neg = False
             
-        if self.byte_integer == _HIGH_ORDER_BIT_BYTE: # again that is in octal binary 1000 0000
+        if self.byte_integer == 0x7F: 
+            self.__condition_ove = True 
+        else:
+            self.__condition_ove = False
+            
+    def __incb(self):
+
+
+        self.byte_integer = (self.byte_integer + 1) & _BYTE_MASK
+
+        if self.byte_integer == 0: 
+            self.__condition_zer = True
+        else:
+            self.__condition_zer = False
+            
+        if self.byte_integer & _HIGH_ORDER_BIT_BYTE:
+            self.__condition_neg = True
+        else:
+            self.__condition_neg = False
+            
+        if self.byte_integer == _HIGH_ORDER_BIT_BYTE: 
+            self.__condition_ove = True 
+        else:
+            self.__condition_ove = False
+            
+    def __negb(self):
+
+        self.byte_integer = (~self.byte_integer + 1 ) & _BYTE_MASK # Two's compliment negate
+            
+        if self.byte_integer == 0: 
+            self.__condition_zer = True
+        else:
+            self.__condition_zer = False
+            
+        if self.byte_integer & _HIGH_ORDER_BIT_BYTE:
+            self.__condition_neg = True
+        else:
+            self.__condition_neg = False
+            
+        if self.byte_integer == _HIGH_ORDER_BIT_BYTE:
             self.__condition_ove = True 
         else:
             self.__condition_ove = False
 
-        if self.byte_integer == 0: # again that is in octal
+        if self.byte_integer == 0: 
             self.__condition_car = False 
         else:
             self.__condition_car = True
@@ -381,7 +371,7 @@ class ALU:
         else:
             self.__condition_zer = False
             
-        if self.byte_integer & _HIGH_ORDER_BIT_WORD:
+        if self.byte_integer & _HIGH_ORDER_BIT_BYTE:
             self.__condition_neg = True
         else:
             self.__condition_neg = False
@@ -407,6 +397,7 @@ class ALU:
         self.__condition_car  = True
         
     def __asr(self):
+        
         holder = self.word_integer & _HIGH_ORDER_BIT_WORD
         self.word_integer = self.word_integer >> 1
         if holder:
@@ -433,6 +424,7 @@ class ALU:
             self.__condition_ove  = False
             
     def __asl(self):
+
         self.word_integer = (self.word_integer << 1) & _WORD_MASK
 
         if self.word_integer == 0: 
@@ -456,11 +448,11 @@ class ALU:
             self.__condition_ove  = False
         
     def __asrb(self):
+
         holder = self.byte_integer & _HIGH_ORDER_BIT_BYTE
         self.byte_integer = self.byte_integer >> 1
         if holder:
             self.byte_integer = self.byte_integer | _HIGH_ORDER_BIT_BYTE
-
             
         if self.byte_integer == 0: 
             self.__condition_zer = True
@@ -481,8 +473,9 @@ class ALU:
             self.__condition_ove  = True
         else:
             self.__condition_ove  = False
-     
+        
     def __aslb(self):
+
         self.byte_integer = (self.byte_integer << 1) & _BYTE_MASK
 
         if self.byte_integer == 0: 
@@ -504,75 +497,76 @@ class ALU:
             self.__condition_ove  = True
         else:
             self.__condition_ove  = False
-                
+                        
     def __adc(self):
-        
-        if self.word_integer == 0x7FFF and self.__condition_car:
+
+        holder = self.word_integer
+
+        if self.__condition_car:
+            self.word_integer = (self.word_integer + 1) & _WORD_MASK
+
+        if holder == 0x7FFF and self.__condition_car:
             self.__condition_ove  = True
         else:
             self.__condition_ove  = False
 
-        if self.word_integer == _WORD_MASK and self.__condition_car:
+        if holder == _WORD_MASK and self.__condition_car:
             self.__condition_car = True 
         else:
             self.__condition_car  = False
-            
-        # First two flag check depend on unaltered value and must be done first
-        if self.__condition_car:
-            self.word_integer = self.word_integer + 1
-
+        
         if self.word_integer == 0: 
             self.__condition_zer = True
         else:
             self.__condition_zer = False
             
-        if self.word_integer & _HIGH_ORDER_BIT_BYTE:
+        if self.word_integer & _HIGH_ORDER_BIT_WORD:
             self.__condition_neg = True
         else:
             self.__condition_neg = False
-        
-        
+                
     def __sbc(self):
 
         if self.__condition_car:
-            self.word_integer = self.word_integer - 1
+            self.word_integer = (self.word_integer - 1) & _WORD_MASK
 
-        if self.byte_integer == 0: 
-            self.__condition_zer = True
-        else:
-            self.__condition_zer = False
-            
-        if self.byte_integer & _HIGH_ORDER_BIT_BYTE:
-            self.__condition_neg = True
-        else:
-            self.__condition_neg = False
-        
-        if self.word_integer == 0 and self.__condition_car: 
-            self.__condition_car  = False
-        else:
-            self.__condition_car  = True
-
-        if self.word_integer == _HIGH_ORDER_BIT_WORD: 
-            self.__condition_ove  = True
-        else:
-            self.__condition_ove  = False
-        
-    def __adcb(self):
-
-        if self.byte_integer == 0x7F and self.__condition_car:
+        if self.word_integer  == _HIGH_ORDER_BIT_WORD:
             self.__condition_ove  = True
         else:
             self.__condition_ove  = False
 
-        if self.byte_integer == _BYTE_MASK and self.__condition_car:
+        if self.word_integer == 0 and self.__condition_car:
             self.__condition_car = True 
         else:
             self.__condition_car  = False
+        
+        if self.word_integer == 0: 
+            self.__condition_zer = True
+        else:
+            self.__condition_zer = False
             
-        # First two flag check depend on unaltered value and must be done first
-        if self.__condition_car:
-            self.byte_integer = self.byte_integer + 1
+        if self.word_integer & _HIGH_ORDER_BIT_WORD:
+            self.__condition_neg = True
+        else:
+            self.__condition_neg = False
+        
+    def __adcb(self):
 
+        holder = self.byte_integer
+
+        if self.__condition_car:
+            self.byte_integer = (self.byte_integer + 1) & _BYTE_MASK
+
+        if holder == 0x7FFF and self.__condition_car:
+            self.__condition_ove  = True
+        else:
+            self.__condition_ove  = False
+
+        if holder == _BYTE_MASK and self.__condition_car:
+            self.__condition_car = True 
+        else:
+            self.__condition_car  = False
+        
         if self.byte_integer == 0: 
             self.__condition_zer = True
         else:
@@ -582,13 +576,22 @@ class ALU:
             self.__condition_neg = True
         else:
             self.__condition_neg = False
-        
         
     def __sbcb(self):
 
         if self.__condition_car:
-            self.byte_integer = self.byte_integer - 1
+            self.byte_integer = (self.byte_integer - 1) & _BYTE_MASK
 
+        if self.byte_integer  == _HIGH_ORDER_BIT_BYTE:
+            self.__condition_ove  = True
+        else:
+            self.__condition_ove  = False
+
+        if self.byte_integer == 0 and self.__condition_car:
+            self.__condition_car = True 
+        else:
+            self.__condition_car  = False
+        
         if self.byte_integer == 0: 
             self.__condition_zer = True
         else:
@@ -598,17 +601,7 @@ class ALU:
             self.__condition_neg = True
         else:
             self.__condition_neg = False
-        
-        if self.byte_integer == 0 and self.__condition_car: 
-            self.__condition_car  = False
-        else:
-            self.__condition_car  = True
-
-        if self.byte_integer == _HIGH_ORDER_BIT_BYTE: 
-            self.__condition_ove  = True
-        else:
-            self.__condition_ove  = False
-        
+                
     def __rol(self):
 
         holder = self.word_integer & _HIGH_ORDER_BIT_WORD
@@ -626,7 +619,7 @@ class ALU:
         else:
             self.__condition_neg = False
         
-        if self.word_integer & _HIGH_ORDER_BIT_WORD: 
+        if self.word_integer & _LOW_ORDER_BIT: 
             self.__condition_car  = True
         else:
             self.__condition_car  = False
@@ -681,7 +674,7 @@ class ALU:
         else:
             self.__condition_neg = False
         
-        if self.byte_integer & _HIGH_ORDER_BIT_BYTE: 
+        if self.byte_integer & _LOW_ORDER_BIT: 
             self.__condition_car  = True
         else:
             self.__condition_car  = False
@@ -691,8 +684,8 @@ class ALU:
         else:
             self.__condition_ove  = False
         
-    def __rorb(self):
-        
+    def __rorb(self):        
+  
         holder = self.byte_integer & _LOW_ORDER_BIT
         self.byte_integer = (self.byte_integer >> 1) & _BYTE_MASK
         if holder:
@@ -731,6 +724,22 @@ class ALU:
             self.__condition_neg = False
         
         self.__condition_ove  = False
+
+    def __swab(self):
+
+        if (self.word_integer & _BYTE_MASK) == 0: 
+            self.__condition_zer = True
+        else:
+            self.__condition_zer = False
+            
+        if self.word_integer & _HIGH_ORDER_BIT_BYTE:
+            self.__condition_neg = True
+        else:
+            self.__condition_neg = False
+        
+        self.__condition_ove = False
+        self.__condition_car = False
+
         
     def __add(self):
 
@@ -761,8 +770,8 @@ class ALU:
         
     def __sub(self):
 
-        holder = (self.word_integer + (~self.word_integer_second + 1)) 
-        if holder == 0: 
+        holder = (self.word_integer + ((~self.word_integer_second + 1) & _WORD_MASK))
+        if holder & _WORD_MASK == 0: 
             self.__condition_zer = True
         else:
             self.__condition_zer = False
@@ -787,8 +796,12 @@ class ALU:
         self.word_integer = holder & _WORD_MASK
         
     def __cmp(self):
-        
-        holder = self.word_integer_second + (~self.word_integer + 1)
+ 
+        holder = (self.word_integer_second + ((~self.word_integer + 1) & _WORD_MASK)) 
+
+        if DEBUG_ON:
+            print('(result->',hex(holder), end=')') #for testing
+
         if holder == 0: 
             self.__condition_zer = True
         else:
@@ -806,13 +819,13 @@ class ALU:
         else:
             self.__condition_ove = True
 
-        if holder & 0x100:
+        if holder & 0x10000:
             self.__condition_car = False
         else:
             self.__condition_car = True
         
     def __movb(self):
-
+    
         if self.byte_integer == 0: 
             self.__condition_zer = True
         else:
@@ -826,8 +839,12 @@ class ALU:
         self.__condition_ove  = False
         
     def __cmpb(self):
-        
-        holder = self.byte_integer_second + (~self.byte_integer + 1)
+         
+        holder = (self.byte_integer_second + ((~self.byte_integer + 1) & _BYTE_MASK)) 
+
+        if DEBUG_ON:
+            print('(result->',hex(holder), end=')') #for testing
+
         if holder == 0: 
             self.__condition_zer = True
         else:
@@ -840,7 +857,7 @@ class ALU:
 
         if (self.byte_integer & _HIGH_ORDER_BIT_BYTE) == (self.byte_integer_second & _HIGH_ORDER_BIT_BYTE): 
             self.__condition_ove  = False
-        elif (holder & _HIGH_ORDER_BIT_BYTE) == (self.byte_integer & _HIGH_ORDER_BIT):
+        elif (holder & _HIGH_ORDER_BIT_BYTE) == (self.byte_integer & _HIGH_ORDER_BIT_BYTE):
             self.__condition_ove  = False
         else:
             self.__condition_ove = True
@@ -868,8 +885,11 @@ class ALU:
         
     def __bit(self):# bit does not change the destination
 
-        holder = self.word_integer | self.word_integer_second
+        holder = self.word_integer & self.word_integer_second
 
+        if DEBUG_ON:
+            print('(result->',hex(holder), end=')') #for testing
+        
         if holder == 0: 
             self.__condition_zer = True
         else:
@@ -885,7 +905,7 @@ class ALU:
     def __bic(self):
     
         self.word_integer = self.word_integer & ~(self.word_integer_second)
-
+        
         if self.word_integer == 0: 
             self.__condition_zer = True
         else:
@@ -913,11 +933,14 @@ class ALU:
             self.__condition_neg = False
         
         self.__condition_ove  = False
-
+        
     def __bitb(self):
+ 
+        holder = self.byte_integer & self.byte_integer_second
 
-        holder = self.byte_integer | self.byte_integer_second
-
+        if DEBUG_ON:
+            print('(result->',hex(holder), end=')') #for testing
+        
         if holder == 0: 
             self.__condition_zer = True
         else:
@@ -928,12 +951,12 @@ class ALU:
         else:
             self.__condition_neg = False
         
-        self.__condition_ove  = False
-        
+        self.__condition_ove  = False                
+       
     def __bicb(self):
     
         self.byte_integer = self.byte_integer & ~(self.byte_integer_second)
-
+        
         if self.byte_integer == 0: 
             self.__condition_zer = True
         else:
@@ -945,7 +968,7 @@ class ALU:
             self.__condition_neg = False
         
         self.__condition_ove  = False
-
+            
     def __clc(self):
         self.__condition_car  = False
     def __clv(self):
@@ -977,24 +1000,42 @@ def test( stuff, ele1, ele2, ele3, ele4):
     ary = bytearray(elements1)
     ary2 = bytearray(elements2)
 
-    print('\tout_hex:', format(testALU.execute(testALU, stuff, ary, ary2), '04X'), "\tout_decimal:", format(testALU.execute(testALU, stuff, ary, ary2),'05d'),'condition codes NZVC :', testALU.get_condition(testALU))
+    #print('\tout_hex:', format(testALU.execute(testALU, stuff, ary, ary2), '04X'), "\tout_decimal:", format(testALU.execute(testALU, stuff, ary, ary2),'05d'),'\tcondition codes NZVC :', testALU.get_condition(testALU))
+
+    testALU.execute(testALU, 'sec')# Have to set carry flag to check adc and sdc
+    print('\tout_hex:', format(testALU.execute(testALU, stuff, ary, ary2), '04X'), '\tFlags NZVC :', testALU.get_condition(testALU))
     
 instructionsOneOperand = ['clr', 'dec', 'inc', 'neg', 'tst', 'com', 'asr', 'asl', 'adc', 'sbc', 'rol', 'ror', 'swab'] 
 instructionsTwoOperand = ['mov', 'add', 'sub', 'cmp', 'bis', 'bit', 'bic']   
 
 def testBench():
+
+    global DEBUG_ON
+    #DEBUG_ON = False
+    
+    print('\n-------------------- Word Operations ---------------------')
+    
+    print('------------ Double Operand Instructions ----------\n')
+    
     for i in instructionsTwoOperand:
+
+        print('-------------------------------------------------------------------------------')
+
         print(i, '0x00FF 0xFF02 ', end ='->')
         test(i,0x00, 0xFF, 0xFF, 0x02) 
 
         print(i, '0x7FFF 0x8002 ', end ='->')
         test(i,0x7F, 0xFF, 0x80, 0x02) 
 
+        print('-------------------------------------------------------------------------------')
+
         print(i, '0x00FF 0x00F2 ', end ='->')
         test(i,0x00, 0xFF, 0x00, 0xF2) 
-    
+        
         print(i, '0x7FFF 0x7FF0 ', end ='->')
         test(i,0x7F, 0xFF, 0x7F, 0xF0) 
+
+        print('-------------------------------------------------------------------------------')
     
         print(i, '0xFF00 0x00FF ', end ='->')
         test(i,0xFF, 0x00, 0x00, 0xFF) 
@@ -1002,11 +1043,15 @@ def testBench():
         print(i, '0x8000 0x7FFF ', end ='->')
         test(i,0x80, 0x00, 0x7F, 0xFF) 
 
+        print('-------------------------------------------------------------------------------')
+
         print(i, '0xFF01 0xFF04 ', end ='->')
         test(i,0xFF, 0x01, 0xFF, 0x04) 
 
         print(i, '0x8000 0x8002 ', end ='->')
         test(i,0x80, 0x00, 0x80, 0x02) 
+
+        print('-------------------------------------------------------------------------------')
 
         print(i, '0x00FF 0x00FF ', end ='->')
         test(i,0x00, 0xFF, 0x00, 0xFF) 
@@ -1014,12 +1059,22 @@ def testBench():
         print(i, '0x00FF 0x0000 ', end ='->')
         test(i,0x00, 0xFF, 0x00, 0x00) 
 
+        print('-------------------------------------------------------------------------------')
+
         print(i, '0xFF02 0x0000 ', end ='->')
         test(i,0xFF, 0x02, 0x00, 0x00) 
 
+        print(i, '0x0000 0x0000 ', end ='->')
+        test(i,0x00, 0x00, 0x00, 0x00) 
+
+        testALU.execute(testALU, 'clr')
+
+    print('-------------------------------------------------------------------------------')
     
-    
+    print('\n------------ Single Operand Instructions ----------\n')
     for j in instructionsOneOperand:
+
+        print('-------------------------------------------------------------------------------')
 
         print(j, '0xFF00', end ='->')
         test(j,0xFF, 0x00, 0x00, 0x00) 
@@ -1029,4 +1084,102 @@ def testBench():
 
         print(j, '0x0000', end ='->')
         test(j,0x00, 0x00, 0x00, 0x00) 
+
+        print(j, '0xFFFF', end ='->')
+        test(j,0xFF, 0xFF, 0x00, 0x00) 
     
+        print(j, '0x0005', end ='->')
+        test(j,0x00, 0x05, 0x00, 0x00) 
+
+        print(j, '0xA000', end ='->')
+        test(j,0xA0, 0x00, 0x00, 0x00) 
+
+
+
+instructionsOneOperandByte = ['clrb', 'decb', 'incb', 'negb', 'tstb', 'comb', 'asrb', 'aslb', 'adcb', 'sbcb', 'rolb', 'rorb'] 
+instructionsTwoOperandByte = ['movb', 'bisb','cmpb', 'bitb', 'bicb']   
+
+def testBenchByte():
+
+    global DEBUG_ON
+    #DEBUG_ON = False
+
+    print('\n-------------------- Byte Operations ---------------------')
+    print('------------ Double Operand Instructions ----------\n')
+    
+    for i in instructionsTwoOperandByte:
+
+        print('-------------------------------------------------------------------------------')
+
+        print(i, '0x220F 0x22F2 ', end ='->')
+        test(i,0x22, 0x0F, 0x22, 0xF2) 
+
+        print(i, '0x227F 0x2282 ', end ='->')
+        test(i,0x22, 0x7F, 0x22, 0x82) 
+
+        print('-------------------------------------------------------------------------------')
+
+        print(i, '0x220F 0x2232 ', end ='->')
+        test(i,0x22, 0x0F, 0x22, 0x32) 
+        
+        print(i, '0x227F 0x2270 ', end ='->')
+        test(i,0x22, 0x7F, 0x22, 0x70) 
+
+        print('-------------------------------------------------------------------------------')
+    
+        print(i, '0x22F0 0x220F ', end ='->')
+        test(i,0x22, 0xF0, 0x00, 0xFF) 
+
+        print(i, '0x2280 0x227F ', end ='->')
+        test(i,0x22, 0x80, 0x22, 0x7F) 
+
+        print('-------------------------------------------------------------------------------')
+
+        print(i, '0x22F1 0x22F4 ', end ='->')
+        test(i,0x22, 0xF1, 0x22, 0xF4) 
+
+        print(i, '0x2280 0x2282 ', end ='->')
+        test(i,0x22, 0x80, 0x22, 0x82) 
+
+        print('-------------------------------------------------------------------------------')
+
+        print(i, '0x220F 0x220F ', end ='->')
+        test(i,0x22, 0x0F, 0x22, 0x0F) 
+
+        print(i, '0x220F 0x2200 ', end ='->')
+        test(i,0x22, 0x0F, 0x22, 0x00) 
+
+        print('-------------------------------------------------------------------------------')
+
+        print(i, '0x22F2 0x2200 ', end ='->')
+        test(i,0x22, 0xF2, 0x22, 0x00) 
+
+        print(i, '0x2200 0x2200 ', end ='->')
+        test(i,0x22, 0x00, 0x22, 0x00) 
+
+        testALU.execute(testALU, 'clr')
+
+    print('-------------------------------------------------------------------------------')
+    
+    print('\n------------ Single Operand Instructions ----------\n')
+    for j in instructionsOneOperandByte:
+
+        print('-------------------------------------------------------------------------------')
+
+        print(j, '0x22F0', end ='->')
+        test(j,0x22, 0xF0, 0x00, 0x00) 
+    
+        print(j, '0x220F', end ='->')
+        test(j,0x22, 0x0F, 0x00, 0x00) 
+
+        print(j, '0x2200', end ='->')
+        test(j,0x22, 0x00, 0x00, 0x00) 
+
+        print(j, '0x22FF', end ='->')
+        test(j,0x22, 0xFF, 0x00, 0x00) 
+    
+        print(j, '0x2205', end ='->')
+        test(j,0x22, 0x05, 0x00, 0x00) 
+
+        print(j, '0x22A0', end ='->')
+        test(j,0x22, 0xA0, 0x00, 0x00) 

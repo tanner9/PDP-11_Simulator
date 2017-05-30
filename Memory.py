@@ -51,13 +51,12 @@ class Memory(object):
         def getStartingAddress(self):
             return self.startingAddress
 
-        def memoryRead(self, address, typeOf):
+        def memoryRead(self, address):
             if(self.debug):
                 print("Attempting to read from address %d" %(address))
             LowerByte	 	= self.mem[address]
             HigherByte	    = self.mem[address+1]
             memReadData     = int((HigherByte << 8)|LowerByte) 
-            self.traceWrite(typeOf, address)
             if(self.debug == True):
                 print("MemRead from addr %s. Data = (%d)_10 = (%s)_8" %(address, memReadData, oct(memReadData)))
             return memReadData

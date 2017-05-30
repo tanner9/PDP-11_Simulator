@@ -19,7 +19,14 @@ class decodeStage:
 			instruction = twoOperandInstruction(instructionValue)
 
 		return instruction
-
+	
+	def instructionCount(self,decodeInstr):
+                instructionsList = []
+                instructionsList.append(decodeInstr.mnemonic)
+                total_count = len(instructionsList)
+                print("Instruction Count is %d" %(total_count))
+                print("The Executed Instructions are %s" %(instructionsList))
+		
 	def printInstruction(self):
 		self.printInstructionData()
 

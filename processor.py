@@ -40,7 +40,8 @@ debug = TOP_DEBUG
 PC = regFile.readPC()
 if(debug):
 	print("PC for current instruction =",PC)
-IR = mem.memoryRead(PC, 2)
+IR = mem.memoryRead(PC)
+mem.traceWrite(2, PC)
 if(debug):
 	print("IR =",IR)
 decodedInstruction = decodeStage.decodeInstruction(IR)
@@ -83,7 +84,8 @@ while(decodedInstruction.getMnemonic() != "HALT"):
 	PC = regFile.readPC()
 	if(debug):
 		print("PC for current instruction =",PC)
-	IR = mem.memoryRead(PC, 2)
+	IR = mem.memoryRead(PC)
+	mem.traceWrite(2, PC)
 	if(debug):
 		print("IR =",IR)
 	decodedInstruction = decodeStage.decodeInstruction(IR)
@@ -91,6 +93,3 @@ while(decodedInstruction.getMnemonic() != "HALT"):
 	if(debug):
 		print("Decoded Instruction: ",decodedInstruction.printInstructionData())
 		print("Fetching operands for instruction")
-
-
-
