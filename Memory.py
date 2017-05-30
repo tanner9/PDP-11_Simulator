@@ -44,18 +44,20 @@ class Memory(object):
         def memoryWrite(self, address, memWriteData):
             self.mem[address]   = int(memWriteData & 0x00ff)    #lower 8 bits of 2 byte word
             self.mem[address+1]	= int((memWriteData >> 8) & 0x00ff)      #higher 8 bits of 2 byte word
+            self.traceWrite(1, address)
             if(self.debug == True):
                 print("MemWrite to addr %s. Data = (%d)_10 = (%s)_8" %(address, memWriteData, oct(memWriteData)))
 
         def getStartingAddress(self):
             return self.startingAddress
 
-        def memoryRead(self, address):
+        def memoryRead(self, address, typeOf):
             if(self.debug):
                 print("Attempting to read from address %d" %(address))
             LowerByte	 	= self.mem[address]
             HigherByte	    = self.mem[address+1]
             memReadData     = int((HigherByte << 8)|LowerByte) 
+            self.traceWrite(typeOf, address)
             if(self.debug == True):
                 print("MemRead from addr %s. Data = (%d)_10 = (%s)_8" %(address, memReadData, oct(memReadData)))
             return memReadData
