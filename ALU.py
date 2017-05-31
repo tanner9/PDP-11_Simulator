@@ -41,10 +41,8 @@ class ALU:
 
     mod = 0
     
-    def execute(self, mnemonic, operand1 = primary, operand2 = secondary, modifier = 0):
-        
-        self.mod = modifier
-
+    def execute(self, mnemonic, operand1 = primary, operand2 = secondary):
+    
         self.word_integer = operand1[0]*256 + operand1[1]
         self.byte_integer = operand1[1]
     
@@ -399,6 +397,7 @@ class ALU:
     def __asr(self):
         
         holder = self.word_integer & _HIGH_ORDER_BIT_WORD
+        holder2 = self.word_integer & _LOW_ORDER_BIT
         self.word_integer = self.word_integer >> 1
         if holder:
             self.word_integer = self.word_integer | _HIGH_ORDER_BIT_WORD
@@ -413,7 +412,7 @@ class ALU:
         else:
             self.__condition_neg = False
         
-        if self.word_integer & _LOW_ORDER_BIT: 
+        if  holder2: 
             self.__condition_car  = True
         else:
             self.__condition_car  = False
@@ -424,9 +423,11 @@ class ALU:
             self.__condition_ove  = False
             
     def __asl(self):
-
+        
+        holder = self.word_integer & _HIGH_ORDER_BIT_WORD
+        
         self.word_integer = (self.word_integer << 1) & _WORD_MASK
-
+        
         if self.word_integer == 0: 
             self.__condition_zer = True
         else:
@@ -437,7 +438,7 @@ class ALU:
         else:
             self.__condition_neg = False
         
-        if self.word_integer & _HIGH_ORDER_BIT_WORD: 
+        if holder: 
             self.__condition_car  = True
         else:
             self.__condition_car  = False
@@ -450,6 +451,7 @@ class ALU:
     def __asrb(self):
 
         holder = self.byte_integer & _HIGH_ORDER_BIT_BYTE
+        holder2 = self.byte_integer & _LOW_ORDER_BIT
         self.byte_integer = self.byte_integer >> 1
         if holder:
             self.byte_integer = self.byte_integer | _HIGH_ORDER_BIT_BYTE
@@ -464,7 +466,7 @@ class ALU:
         else:
             self.__condition_neg = False
         
-        if self.byte_integer & _LOW_ORDER_BIT: 
+        if holder2: 
             self.__condition_car  = True
         else:
             self.__condition_car  = False
@@ -476,6 +478,8 @@ class ALU:
         
     def __aslb(self):
 
+        holder = self.word_integer & _HIGH_ORDER_BIT_BYTE
+        
         self.byte_integer = (self.byte_integer << 1) & _BYTE_MASK
 
         if self.byte_integer == 0: 
@@ -488,7 +492,7 @@ class ALU:
         else:
             self.__condition_neg = False
         
-        if self.byte_integer & _HIGH_ORDER_BIT_BYTE: 
+        if holder: 
             self.__condition_car  = True
         else:
             self.__condition_car  = False
@@ -619,7 +623,7 @@ class ALU:
         else:
             self.__condition_neg = False
         
-        if self.word_integer & _LOW_ORDER_BIT: 
+        if holder: 
             self.__condition_car  = True
         else:
             self.__condition_car  = False
@@ -646,7 +650,7 @@ class ALU:
         else:
             self.__condition_neg = False
         
-        if self.word_integer & _LOW_ORDER_BIT: 
+        if holder: 
             self.__condition_car  = True
         else:
             self.__condition_car  = False
@@ -674,7 +678,7 @@ class ALU:
         else:
             self.__condition_neg = False
         
-        if self.byte_integer & _LOW_ORDER_BIT: 
+        if holder: 
             self.__condition_car  = True
         else:
             self.__condition_car  = False
@@ -701,7 +705,7 @@ class ALU:
         else:
             self.__condition_neg = False
         
-        if self.byte_integer & _LOW_ORDER_BIT: 
+        if holder: 
             self.__condition_car  = True
         else:
             self.__condition_car  = False
@@ -814,7 +818,7 @@ class ALU:
 
         if (self.word_integer & _HIGH_ORDER_BIT_WORD) == (self.word_integer_second & _HIGH_ORDER_BIT_WORD): 
             self.__condition_ove  = False
-        elif (holder & _HIGH_ORDER_BIT_WORD) == (self.word_integer & _HIGH_ORDER_BIT_WORD):
+        elif (holder & _HIGH_ORDER_BIT_WORD) == (self.word_integer_second & _HIGH_ORDER_BIT_WORD):
             self.__condition_ove  = False
         else:
             self.__condition_ove = True
@@ -857,7 +861,7 @@ class ALU:
 
         if (self.byte_integer & _HIGH_ORDER_BIT_BYTE) == (self.byte_integer_second & _HIGH_ORDER_BIT_BYTE): 
             self.__condition_ove  = False
-        elif (holder & _HIGH_ORDER_BIT_BYTE) == (self.byte_integer & _HIGH_ORDER_BIT_BYTE):
+        elif (holder & _HIGH_ORDER_BIT_BYTE) == (self.byte_integer_second & _HIGH_ORDER_BIT_BYTE):
             self.__condition_ove  = False
         else:
             self.__condition_ove = True
@@ -1006,7 +1010,7 @@ def test( stuff, ele1, ele2, ele3, ele4):
     print('\tout_hex:', format(testALU.execute(testALU, stuff, ary, ary2), '04X'), '\tFlags NZVC :', testALU.get_condition(testALU))
     
 instructionsOneOperand = ['clr', 'dec', 'inc', 'neg', 'tst', 'com', 'asr', 'asl', 'adc', 'sbc', 'rol', 'ror', 'swab'] 
-instructionsTwoOperand = ['mov', 'add', 'sub', 'cmp', 'bis', 'bit', 'bic']   
+instructionsTwoOperand = ['mov', 'add', 'sub', 'cmp', 'bis', 'bit', 'bic', 'MOV']   
 
 def testBench():
 
@@ -1027,8 +1031,6 @@ def testBench():
         print(i, '0x7FFF 0x8002 ', end ='->')
         test(i,0x7F, 0xFF, 0x80, 0x02) 
 
-        print('-------------------------------------------------------------------------------')
-
         print(i, '0x00FF 0x00F2 ', end ='->')
         test(i,0x00, 0xFF, 0x00, 0xF2) 
         
@@ -1043,8 +1045,6 @@ def testBench():
         print(i, '0x8000 0x7FFF ', end ='->')
         test(i,0x80, 0x00, 0x7F, 0xFF) 
 
-        print('-------------------------------------------------------------------------------')
-
         print(i, '0xFF01 0xFF04 ', end ='->')
         test(i,0xFF, 0x01, 0xFF, 0x04) 
 
@@ -1058,8 +1058,6 @@ def testBench():
 
         print(i, '0x00FF 0x0000 ', end ='->')
         test(i,0x00, 0xFF, 0x00, 0x00) 
-
-        print('-------------------------------------------------------------------------------')
 
         print(i, '0xFF02 0x0000 ', end ='->')
         test(i,0xFF, 0x02, 0x00, 0x00) 
@@ -1087,12 +1085,23 @@ def testBench():
 
         print(j, '0xFFFF', end ='->')
         test(j,0xFF, 0xFF, 0x00, 0x00) 
+
+        print('-------------------------------------------------------------------------------')
     
         print(j, '0x0005', end ='->')
         test(j,0x00, 0x05, 0x00, 0x00) 
 
         print(j, '0xA000', end ='->')
         test(j,0xA0, 0x00, 0x00, 0x00) 
+
+        print(j, '0x0001', end ='->')
+        test(j,0x00, 0x01, 0x00, 0x00) 
+    
+        print(j, '0x8000', end ='->')
+        test(j,0x80, 0x00, 0x00, 0x00) 
+
+        print(j, '0x7FFF', end ='->')
+        test(j,0x7F, 0xFF, 0x00, 0x00) 
 
 
 
@@ -1117,8 +1126,6 @@ def testBenchByte():
         print(i, '0x227F 0x2282 ', end ='->')
         test(i,0x22, 0x7F, 0x22, 0x82) 
 
-        print('-------------------------------------------------------------------------------')
-
         print(i, '0x220F 0x2232 ', end ='->')
         test(i,0x22, 0x0F, 0x22, 0x32) 
         
@@ -1133,8 +1140,6 @@ def testBenchByte():
         print(i, '0x2280 0x227F ', end ='->')
         test(i,0x22, 0x80, 0x22, 0x7F) 
 
-        print('-------------------------------------------------------------------------------')
-
         print(i, '0x22F1 0x22F4 ', end ='->')
         test(i,0x22, 0xF1, 0x22, 0xF4) 
 
@@ -1148,8 +1153,6 @@ def testBenchByte():
 
         print(i, '0x220F 0x2200 ', end ='->')
         test(i,0x22, 0x0F, 0x22, 0x00) 
-
-        print('-------------------------------------------------------------------------------')
 
         print(i, '0x22F2 0x2200 ', end ='->')
         test(i,0x22, 0xF2, 0x22, 0x00) 
@@ -1177,9 +1180,20 @@ def testBenchByte():
 
         print(j, '0x22FF', end ='->')
         test(j,0x22, 0xFF, 0x00, 0x00) 
+
+        print('-------------------------------------------------------------------------------')
     
         print(j, '0x2205', end ='->')
         test(j,0x22, 0x05, 0x00, 0x00) 
 
         print(j, '0x22A0', end ='->')
         test(j,0x22, 0xA0, 0x00, 0x00) 
+
+        print(j, '0x2201', end ='->')
+        test(j,0x22, 0x01, 0x00, 0x00) 
+    
+        print(j, '0x2280', end ='->')
+        test(j,0x22, 0x80, 0x00, 0x00) 
+
+        print(j, '0x227F', end ='->')
+        test(j,0x22, 0x7F, 0x00, 0x00) 
