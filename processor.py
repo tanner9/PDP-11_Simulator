@@ -31,7 +31,7 @@ regFile = RegisterFile(REGFILE_DEBUG)
 regFile.writeReg(7, int(mem.getStartingAddress()))
 dataFetch = dataFetchStage(mem, regFile, DATA_FETCH_DEBUG)
 decodeStage = decodeStage()
-ALU = ALU()
+ALU = ALU
 branchStage = branchStage(BRANCH_DEBUG)
 
 
@@ -60,7 +60,7 @@ while(decodedInstruction.getMnemonic() != "HALT"):
 	if(decodedInstruction.getType() != "branch"):
 		op = decodedInstruction.getMnemonic()
 		print("ALU operands: %s & %s; OP: %s" %(operand0, operand1, op))
-		result = ALU.execute(op,operand0, operand1)
+		result = ALU.execute(ALU, op,operand0, operand1)
 		print("ALU result: %d" %(result))
 		writeBackAddress = dataFetch.getLastAddress()
 		if(decodedInstruction.getNumOperands() > 0 and op != "CMP" and op != "BIT"):
@@ -75,11 +75,12 @@ while(decodedInstruction.getMnemonic() != "HALT"):
 	else:
 		op = decodedInstruction.getMnemonic()
 		offset = decodedInstruction.getOffset()
-		condition = ALU.get_condition()
+		offset = twos_comp(offset, 16)
+		condition = ALU.get_condition(ALU)
 		branchTrue = branchStage.checkBranch(op, condition)
 		if(branchTrue == True):
-			PC = regFile.readReg(7)
-			regFile.writeReg(7, PC+offset)
+			PC = regFile.readReg(7, 0)
+			regFile.writeReg(7, PC+(2*offset))
 
 	PC = regFile.readPC()
 	if(debug):
