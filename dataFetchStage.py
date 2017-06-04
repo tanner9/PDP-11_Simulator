@@ -16,32 +16,28 @@ class dataFetchStage:
 		else:
 			if(mode == 1 or mode == 2 or mode == 4):
 				effectiveAddress = self.regFile.readReg(reg, mode)
-				data = self.mem.memoryRead(effectiveAddress)
-				self.mem.traceWrite(0, effectiveAddress)
+				data = self.mem.memoryRead(effectiveAddress, 0)
 			elif(mode == 3 or mode == 5):
 				address = self.regFile.readReg(reg, mode)
-				effectiveAddress = self.mem.memoryRead(address, 1)
-				data = self.mem.memoryRead(effectiveAddress, 1)
+				effectiveAddress = self.mem.memoryRead(address, 0)
+				data = self.mem.memoryRead(effectiveAddress, 0)
 
 			elif(mode == 6):
 				offset = self.getImmediate()
 				regAddress = self.regFile.readReg(reg, mode)
 				offset = twos_comp(offset, 16)
 				effectiveAddress = regAddress+offset
-				data = self.mem.memoryRead(effectiveAddress)
-				self.mem.traceWrite(0, effectiveAddress)
+				data = self.mem.memoryRead(effectiveAddress, 0)
 			else:
 				offset = self.getImmediate()
 				regAddress = self.regFile.readReg(reg, mode)
 				address = regAddress+offset
-				effectiveAddress = self.mem.memoryRead(address)
-				self.mem.traceWrite(0, effectiveAddress)
-				data = self.mem.memoryRead(effectiveAddress)
-				self.mem.traceWrite(0, effectiveAddress)
+				effectiveAddress = self.mem.memoryRead(address, 0)
+				data = self.mem.memoryRead(effectiveAddress, 0)
 
 			self.lastAddress = effectiveAddress
 			if(self.debug == True):
-				print("Effective address: %d, data: %d" %(effectiveAddress, data))
+				print("Effective address: %s, data: %d" %(oct(effectiveAddress), data))
 
 		return data     
 
@@ -73,14 +69,12 @@ class dataFetchStage:
 
 	def getImmediate(self):
 		address = self.regFile.readPC()
-		imm = self.mem.memoryRead(address)
-		self.mem.traceWrite(0, address)
+		imm = self.mem.memoryRead(address, 0)
 		return imm
 
 	def getLastAddress(self):
 		if(self.debug == True):
-			print("Fetched effective address: %d for write back" %(self.lastAddress))
-			self.mem.traceWrite(1, self.lastAddress)
+			print("Fetched effective address: %s for write back" %(oct(self.lastAddress)))
 		return self.lastAddress
 
 def test():
