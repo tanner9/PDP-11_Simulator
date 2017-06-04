@@ -28,6 +28,7 @@ startingAddress = 0
 # initialize all stage
 mem = Memory(MEM_DEBUG)
 mem.readFileIntoMemory()
+mem.traceFileOpen()
 regFile = RegisterFile(REGFILE_DEBUG)
 regFile.writeReg(7, int(mem.getStartingAddress()))
 dataFetch = dataFetchStage(mem, regFile, DATA_FETCH_DEBUG)
@@ -41,17 +42,16 @@ debug = TOP_DEBUG
 PC = regFile.readPC()
 if(debug):
     print("PC for current instruction =", PC)
-IR = mem.memoryRead(PC)
-mem.traceWrite(2, PC)
+IR = mem.memoryRead(PC, 2)
 if(debug):
     print("IR =", IR)
 decodedInstruction = decodeStage.decodeInstruction(IR)
 
 if(debug):
     print("Decoded Instruction: ", decodedInstruction.printInstructionData())
-    print("Fetching operands for instruction")
 
-while(decodedInstruction.getMnemonic() != "HALT"):
+while(decodedInstruction.getMnemonic() != "HALT"):    
+    print("Fetching operands for instruction")
     operands = dataFetch.fetchData(decodedInstruction)
     numOperands = operands[0]
     operand0 = toByteArray(operands[1])
@@ -68,10 +68,11 @@ while(decodedInstruction.getMnemonic() != "HALT"):
         	print("ALU result: %d" % (result))
         writeBackAddress = dataFetch.getLastAddress()
         if(decodedInstruction.getNumOperands() > 0 and op != "CMP" and op != "BIT"):
-            if(decodedInstruction.getDstMode() == 0):
-                regFile.writeReg(writeBackAddress, result)
-                if(debug):
-                    print("Writing back to regfile")
+            if(instrType == "twoOperand"):
+                if(decodedInstruction.getDstMode() == 0):
+                    regFile.writeReg(writeBackAddress, result)
+                    if(debug):
+                        print("Writing back to regfile")
             else:
                 mem.memoryWrite(writeBackAddress, result)
                 if(debug):
@@ -92,8 +93,7 @@ while(decodedInstruction.getMnemonic() != "HALT"):
     PC = regFile.readPC()
     if(debug):
         print("PC for current instruction =", PC)
-    IR = mem.memoryRead(PC)
-    mem.traceWrite(2, PC)
+    IR = mem.memoryRead(PC, 2)
     if(debug):
         print("IR =", IR)
     decodedInstruction = decodeStage.decodeInstruction(IR)
