@@ -717,6 +717,8 @@ class ALU:
 
     def __mov(self):
 
+        self.word_integer = self.word_integer_second
+        
         if self.word_integer == 0: 
             self.__condition_zer = True
         else:
