@@ -52,6 +52,9 @@ class oneOperandInstruction:
         x.append(self.mode)
         return x
 
+    def getDstMode(self):
+        return self.mode
+
     def getNumOperands(self):
         return self.numOperands
 

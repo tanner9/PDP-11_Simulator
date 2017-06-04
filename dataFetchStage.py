@@ -35,6 +35,7 @@ class dataFetchStage:
 				regAddress = self.regFile.readReg(reg, mode)
 				address = regAddress+offset
 				effectiveAddress = self.mem.memoryRead(address)
+				self.mem.traceWrite(0, effectiveAddress)
 				data = self.mem.memoryRead(effectiveAddress)
 				self.mem.traceWrite(0, effectiveAddress)
 
@@ -52,8 +53,10 @@ class dataFetchStage:
 			if(self.debug == True):
 				print("Fetching data for two operand instruction")
 			reg = instruction.getReg()
-			data.append(self.fetchSingleData(reg[0], reg[1]))
-			data.append(self.fetchSingleData(reg[2], reg[3]))
+			data0 = self.fetchSingleData(reg[0], reg[1])
+			data1 = self.fetchSingleData(reg[2], reg[3])
+			data.append(data1)
+			data.append(data0)
 		elif(numOperands == 1):
 			if(self.debug == True):
 				print("Fetching data for one operand instruction")

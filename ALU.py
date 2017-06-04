@@ -3,10 +3,10 @@
 import math
     
 # Use these for bit position
-_N = 8
-_Z = 4
+_N = 1
+_Z = 8
 _V = 2
-_C = 1
+_C = 4
 
 _BYTE_MASK = 0x00FF
 _WORD_MASK = 0xFFFF
@@ -808,7 +808,7 @@ class ALU:
         if DEBUG_ON:
             print('(result->',hex(holder), end=')') #for testing
 
-        if holder == 0: 
+        if holder & _WORD_MASK == 0: 
             self.__condition_zer = True
         else:
             self.__condition_zer = False

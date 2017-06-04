@@ -8,9 +8,9 @@ class RegisterFile():
     def readReg(self, register, mode):
         
         reg = self.sanitizeInput(register)
-
-        print("Before Read")
-        self.printRegDec(reg)
+        if(self.debug):
+            print("Before Read")
+            self.printRegDec(reg)
 
         if(mode == 2 and reg != "R7"):
             data = self.registers[reg]
@@ -26,15 +26,17 @@ class RegisterFile():
             data = self.registers[reg]
         else:
             data = self.registers[reg]
-        print("Read reg with mode %d" %(mode))
-        self.printRegDec(reg)
+        if(self.debug):
+            print("Read reg with mode %d" %(mode))
+            self.printRegDec(reg)
         return data
 
     def writeReg(self,register, data):
         reg = self.sanitizeInput(register)
         self.registers[reg] = data
-        print("write reg")
-        self.printRegDec(reg)
+        if(self.debug):
+            print("write reg")
+            self.printRegDec(reg)
         
     def printRegDec(self,register):
         reg = self.sanitizeInput(register)
@@ -47,8 +49,9 @@ class RegisterFile():
     def readPC(self):
         PC = self.registers['R7']
         self.registers['R7'] = PC+2
-        print("Read and increment PC")
-        self.printRegDec('R7')
+        if(self.debug):
+            print("Read and increment PC")
+            self.printRegDec('R7')
         return PC
 
     def printRegFile(self):
