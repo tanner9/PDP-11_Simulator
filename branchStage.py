@@ -5,10 +5,10 @@ class branchStage:
 
     def checkBranch(self, op, cond):
         condition = []
-        condition.append(int(cond[0])) # condition[0] = Z
-        condition.append(int(cond[1])) # condition[1] = C
+        condition.append(int(cond[1])) # condition[0] = Z
+        condition.append(int(cond[3])) # condition[1] = C
         condition.append(int(cond[2])) # condition[2] = V
-        condition.append(int(cond[3])) # condition[3] = N
+        condition.append(int(cond[0])) # condition[3] = N
         
         if(op == "BR"):
             return True

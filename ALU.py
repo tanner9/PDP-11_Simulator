@@ -3,10 +3,10 @@
 import math
     
 # Use these for bit position
-_N = 1
-_Z = 8
+_N = 8
+_Z = 4
 _V = 2
-_C = 4
+_C = 1
 
 _BYTE_MASK = 0x00FF
 _WORD_MASK = 0xFFFF
