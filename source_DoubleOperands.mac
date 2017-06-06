@@ -1,0 +1,26 @@
+
+//Random Code check with Double operands
+.origin 1000
+begin:	mov #077772., r0					
+		mov #0., r3
+		bis r0, r5		 	
+		cmp r3, #10
+		inc @(r3)					
+		sub r3, r5			
+		mov (r5), r2
+.end begin 
+
+//string copy with branch
+
+.origin 1000
+start: 	mov #msga, r1
+		mov #msgb, r2
+		clr r0
+l1:		movb (r1)+, (r2)+
+		beq done
+		inc r0
+		br l1
+done:	halt	
+msga: .string "Manasvi Prasad"
+msgb: .string "ECE Fall 2016"
+.end start 
