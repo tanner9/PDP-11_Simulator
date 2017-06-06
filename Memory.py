@@ -53,7 +53,7 @@ class Memory(object):
     def memoryRead(self, address, typeOf):
         decode = decodeStage()
         if(self.debug):
-            print("Attempting to read from address %s" %(oct(address))
+            print("Attempting to read from address %s" %(oct(address)))
         LowerByte = self.mem[address]
         HigherByte = self.mem[address + 1]
         memReadData = int((HigherByte << 8) | LowerByte)
@@ -61,7 +61,7 @@ class Memory(object):
         instr = decode.decodeInstruction(memReadData)
         if(((instr.mnemonic != "ERROR") | (instr.mnemonic == "WAIT")) & (typeOf == 2)):
                     self.count += 1
-                    if(inst.mnemonic == "HALT"):
+                    if(instr.mnemonic == "HALT"):
                         print("Current Instructions Executed Count is %d" %(self.count))
         if(self.debug):
             print("MemRead from addr %s. Data = (%d)_10 = (%s)_8" %
