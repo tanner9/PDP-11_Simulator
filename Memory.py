@@ -37,12 +37,12 @@ class Memory(object):
         else:
             self.startingAddress = startAddressLine
 
-    def memoryWrite(self, address, memWriteData, typeOf):
+    def memoryWrite(self, address, memWriteData):
         # lower 8 bits of 2 byte word
         self.mem[address] = int(memWriteData & 0x00ff)
         # higher 8 bits of 2 byte word
         self.mem[address + 1] = int((memWriteData >> 8) & 0x00ff)
-        self.traceWrite(typeOf, address)
+        self.traceWrite(1, address)
         if(self.debug):
             print("MemWrite to addr %s. Data = (%d)_10 = (%s)_8" %
                   (oct(address), memWriteData, oct(memWriteData)))

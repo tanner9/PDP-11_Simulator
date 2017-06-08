@@ -40,6 +40,7 @@ branchStage = branchStage(BRANCH_DEBUG)
 # fetch and execute first instruction
 debug = TOP_DEBUG
 PC = regFile.readPC()
+print(PC)
 if(debug):
     print("PC for current instruction =", PC)
 IR = mem.memoryRead(PC, 2)
@@ -50,8 +51,9 @@ decodedInstruction = decodeStage.decodeInstruction(IR)
 if(debug):
     print("Decoded Instruction: ", decodedInstruction.printInstructionData())
 
-while(decodedInstruction.getMnemonic() != "HALT"):    
-    print("Fetching operands for instruction")
+while(decodedInstruction.getMnemonic() != "HALT"): 
+    if(debug):   
+        print("Fetching operands for instruction")
     operands = dataFetch.fetchData(decodedInstruction)
     numOperands = operands[0]
     operand0 = toByteArray(operands[1])
@@ -63,16 +65,16 @@ while(decodedInstruction.getMnemonic() != "HALT"):
         if(debug):
         	print("ALU operands: %s & %s; OP: %s" % (operand0, operand1, op))
         result = ALU.execute(ALU, op, operand0, operand1)
-        print(ALU.get_condition(ALU))
+        if(debug):
+            print("Condition code: %s" %(ALU.get_condition(ALU)))
         if(debug):
         	print("ALU result: %d" % (result))
         writeBackAddress = dataFetch.getLastAddress()
         if(decodedInstruction.getNumOperands() > 0 and op != "CMP" and op != "BIT"):
-            if(instrType == "twoOperand"):
-                if(decodedInstruction.getDstMode() == 0):
-                    regFile.writeReg(writeBackAddress, result)
-                    if(debug):
-                        print("Writing back to regfile")
+            if(decodedInstruction.getDstMode() == 0):
+                regFile.writeReg(writeBackAddress, result)
+                if(debug):
+                    print("Writing back to regfile")
             else:
                 mem.memoryWrite(writeBackAddress, result)
                 if(debug):
@@ -105,6 +107,6 @@ while(decodedInstruction.getMnemonic() != "HALT"):
 if(debug):
     print("Program has halted")
     regFile.printRegFile()
-    mem.memoryRead(0)
-    mem.memoryRead(2)
-    mem.memoryRead(4)
+    mem.memoryRead(0, 0)
+    mem.memoryRead(2, 0)
+    mem.memoryRead(4, 0)

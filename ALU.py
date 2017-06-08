@@ -212,9 +212,9 @@ class ALU:
             self.__condition_neg = False
             
         if self.word_integer == 0x7FFF: 
-            self.__condition_ove = True 
+            self.__condition_car = True 
         else:
-            self.__condition_ove = False
+            self.__condition_car = False
         
     def __inc(self):
 
@@ -230,7 +230,7 @@ class ALU:
         else:
             self.__condition_neg = False
             
-        if self.word_integer == _HIGH_ORDER_BIT_WORD: 
+        if self.word_integer == 0x8000: 
             self.__condition_ove = True 
         else:
             self.__condition_ove = False
@@ -1199,3 +1199,5 @@ def testBenchByte():
 
         print(j, '0x227F', end ='->')
         test(j,0x22, 0x7F, 0x00, 0x00) 
+
+testBench()
