@@ -1199,5 +1199,3 @@ def testBenchByte():
 
         print(j, '0x227F', end ='->')
         test(j,0x22, 0x7F, 0x00, 0x00) 
-
-testBench()
