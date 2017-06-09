@@ -60,23 +60,25 @@ class Memory(object):
         self.traceWrite(typeOf, address)            
         instr = decode.decodeInstruction(memReadData)
         if(((instr.mnemonic != "ERROR") | (instr.mnemonic == "WAIT")) & (typeOf == 2)):
-                    self.count += 1
-                    if(instr.mnemonic == "HALT"):
-                        print("Current Instructions Executed Count is %d" %(self.count))
+            self.count += 1
         if(self.debug):
             print("MemRead from addr %s. Data = (%d)_10 = (%s)_8" %
                   (oct(address), memReadData, oct(memReadData)))
         return memReadData
 
     def traceWrite(self,typeOf,address):
-            f       = open('ECE586_Trace','a')
+            f       = open('ECE586_Trace.txt','a')
             f.write('{} {:>18} \n'.format(typeOf, oct(address)))
             
     def traceFileOpen(self):                       
             x       = ' '
-            f       = open('ECE586_Trace','w')
+            f       = open('ECE586_Trace.txt','w')
             text    = 'TYPE' +10*x + 'ADDRESS \n'
             f.write(text)
+            print("Writing trace file in \"ECE586_Trace.txt\"\n")
+
+    def getInstructionCount(self):
+        return self.count
 
 def test():
     a = 655

@@ -16,7 +16,7 @@ _LOW_ORDER_BIT = 0x01
 
 # ------------- This flag causes additional output 
 # ------------- It causes the operations to display internal values
-DEBUG_ON = True
+DEBUG_ON = False
 
 class ALU:
     

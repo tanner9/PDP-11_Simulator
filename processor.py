@@ -4,11 +4,11 @@ from ALU import *
 from branchStage import *
 
 MASTER_DEBUG = True
-MEM_DEBUG = True
-DATA_FETCH_DEBUG = True
+MEM_DEBUG = False
+DATA_FETCH_DEBUG = False
 REGFILE_DEBUG = False
-BRANCH_DEBUG = True
-TOP_DEBUG = True
+BRANCH_DEBUG = False
+TOP_DEBUG = False
 
 
 def toByteArray(data):
@@ -40,9 +40,10 @@ branchStage = branchStage(BRANCH_DEBUG)
 # fetch and execute first instruction
 debug = TOP_DEBUG
 PC = regFile.readPC()
-print(PC)
 if(debug):
-    print("PC for current instruction =", PC)
+    print("Starting Address: %o" %PC)
+if(debug):
+    print("\nPC for current instruction =", PC)
 IR = mem.memoryRead(PC, 2)
 if(debug):
     print("IR =", IR)
@@ -66,7 +67,8 @@ while(decodedInstruction.getMnemonic() != "HALT"):
         	print("ALU operands: %s & %s; OP: %s" % (operand0, operand1, op))
         result = ALU.execute(ALU, op, operand0, operand1)
         if(debug):
-            print("Condition code: %s" %(ALU.get_condition(ALU)))
+            cond_code = ALU.get_condition(ALU)
+            print("Condition code: N:%s Z:%s V:%s C:%s " %(cond_code[0], cond_code[1], cond_code[2], cond_code[3]))
         if(debug):
         	print("ALU result: %d" % (result))
         writeBackAddress = dataFetch.getLastAddress()
@@ -107,6 +109,8 @@ while(decodedInstruction.getMnemonic() != "HALT"):
 if(debug):
     print("Program has halted")
     regFile.printRegFile()
-    mem.memoryRead(0, 0)
-    mem.memoryRead(2, 0)
-    mem.memoryRead(4, 0)
+
+print("Instructions Executed: %d" %(mem.getInstructionCount()))
+mem.memoryRead(0, 0)
+mem.memoryRead(2, 0)
+mem.memoryRead(4, 0)
