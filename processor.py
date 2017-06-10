@@ -2,6 +2,14 @@ from dataFetchStage import *
 from decodeInstruction import *
 from ALU import *
 from branchStage import *
+import argparse
+
+parser = argparse.ArgumentParser(description="PDP-11 ISA Simulator")
+
+parser.add_argument('-i', action="store", dest="inputFile", default="")
+parser.add_argument('-v', action="store_true", dest="verbose", default=False)
+
+args = parser.parse_args()
 
 MASTER_DEBUG = True
 MEM_DEBUG = False
@@ -26,11 +34,11 @@ if(MASTER_DEBUG == False):
 
 startingAddress = 0
 # initialize all stage
-mem = Memory(MEM_DEBUG)
+mem = Memory(MEM_DEBUG, args.inputFile)
 mem.readFileIntoMemory()
 mem.traceFileOpen()
 regFile = RegisterFile(REGFILE_DEBUG)
-regFile.writeReg(7, int(mem.getStartingAddress()))
+regFile.writeReg(7, mem.getStartingAddress())
 dataFetch = dataFetchStage(mem, regFile, DATA_FETCH_DEBUG)
 decodeStage = decodeStage()
 ALU = ALU

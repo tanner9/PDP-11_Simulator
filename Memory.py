@@ -3,20 +3,23 @@ from decodeInstruction import *  # used for debug
 
 class Memory(object):
 
-    def __init__(self, debug):
+    def __init__(self, debug, inputFile):
         self.mem = bytearray(65536)
         self.debug = debug
         self.count = 0
+        self.inputFile = inputFile
 
     def readFileIntoMemory(self):
         decode = decodeStage()
-        filename = "test.ascii"
+        filename = self.inputFile
+        if(filename == ""):
+            filename = input('Enter the object code filename: ' )
         startAddressLine = ""
         pos = 0
         with open(filename) as fp:
             for line in fp:
                 if(line[0] == '*'):
-                    startAddressLine = line
+                    startAddressLine = line[1:]
                 elif(line[0] == '@'):
                     pos = int(line[1:], 8)
                 else:
@@ -35,7 +38,7 @@ class Memory(object):
             else:
                 self.startingAddress = self.startingAddress
         else:
-            self.startingAddress = startAddressLine
+            self.startingAddress = int(startAddressLine.rstrip(), 8)
 
     def memoryWrite(self, address, memWriteData):
         # lower 8 bits of 2 byte word
