@@ -212,9 +212,9 @@ class ALU:
             self.__condition_neg = False
             
         if self.word_integer == 0x7FFF: 
-            self.__condition_car = True 
+            self.__condition_ove = True 
         else:
-            self.__condition_car = False
+            self.__condition_ove = False
         
     def __inc(self):
 
@@ -992,8 +992,6 @@ class ALU:
     def __sen(self):
         self.__condition_neg  = True
 
-
-
     
 # following code is to ease testing only    
 # odd elements will be the MSB for the inputs on the test function
@@ -1012,7 +1010,7 @@ def test( stuff, ele1, ele2, ele3, ele4):
     print('\tout_hex:', format(testALU.execute(testALU, stuff, ary, ary2), '04X'), '\tFlags NZVC :', testALU.get_condition(testALU))
     
 instructionsOneOperand = ['clr', 'dec', 'inc', 'neg', 'tst', 'com', 'asr', 'asl', 'adc', 'sbc', 'rol', 'ror', 'swab'] 
-instructionsTwoOperand = ['mov', 'add', 'sub', 'cmp', 'bis', 'bit', 'bic', 'MOV']   
+instructionsTwoOperand = ['add', 'sub', 'mov', 'bis', 'cmp', 'bit', 'bic']   
 
 def testBench():
 
