@@ -1,0 +1,10 @@
+.origin 1000
+begin:	mov #077772., r0					
+		mov #0., r3
+		bis r0, r5		 	
+		cmp r3, #10
+		inc @(r3)					
+		sub r3, r5			
+		mov (r5), r2
+.end begin 
+
