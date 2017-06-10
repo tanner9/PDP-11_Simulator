@@ -74,7 +74,11 @@ while(decodedInstruction.getMnemonic() != "HALT"):
     operand1 = toByteArray(operands[2])
     if(debug):
         print("Fetched operands: ", operand0, ", ", operand1)
-    if(decodedInstruction.getType() != "branch"):
+    if(decodedInstruction.getMnemonic == "JMP"):
+        if(debug):
+            print("Jumping to address %o" %operand0)
+        regFile.writeReg(7, operand0)
+    elif(decodedInstruction.getType() != "branch"):
         op = decodedInstruction.getMnemonic()
         if(debug):
         	print("ALU operands: %s & %s; OP: %s" % (operand0, operand1, op))

@@ -42,7 +42,9 @@ class oneOperandInstruction:
         elif(self.opCode == 0o3):
             self.mnemonic = "SWAB"
         elif(self.opCode == 0o67):
-            self.mnemonic = "SoT"  
+            self.mnemonic = "SoT" 
+        elif(self.opCode == 0o1):
+            self.mnemonic = "JMP" 
         else:
             self.mnemonic = "ERROR"
 
