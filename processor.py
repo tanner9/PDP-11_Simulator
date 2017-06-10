@@ -16,8 +16,7 @@ MEM_DEBUG = False
 DATA_FETCH_DEBUG = False
 REGFILE_DEBUG = False
 BRANCH_DEBUG = False
-TOP_DEBUG = False
-
+TOP_DEBUG = True
 
 def toByteArray(data):
     operand = bytearray(2)
@@ -58,7 +57,7 @@ if(debug):
 decodedInstruction = decodeStage.decodeInstruction(IR)
 
 if(debug):
-    print("Decoded Instruction: ", decodedInstruction.printInstructionData())
+    decodedInstruction.printInstructionData()
 
 while(decodedInstruction.getMnemonic() != "HALT"): 
     if(debug):   
@@ -104,15 +103,14 @@ while(decodedInstruction.getMnemonic() != "HALT"):
 
     PC = regFile.readPC()
     if(debug):
-        print("PC for current instruction =", PC)
+        print("\nPC for current instruction =", PC)
     IR = mem.memoryRead(PC, 2)
     if(debug):
         print("IR =", IR)
     decodedInstruction = decodeStage.decodeInstruction(IR)
 
     if(debug):
-        print("Decoded Instruction: ", decodedInstruction.printInstructionData())
-        print("Fetching operands for instruction")
+        decodedInstruction.printInstructionData()
 
 if(debug):
     print("Program has halted")

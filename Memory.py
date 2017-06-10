@@ -38,7 +38,7 @@ class Memory(object):
             else:
                 self.startingAddress = self.startingAddress
         else:
-            self.startingAddress = int(startAddressLine.rstrip(), 8)
+            self.startingAddress = int(startAddressLine, 8)
 
     def memoryWrite(self, address, memWriteData):
         # lower 8 bits of 2 byte word
