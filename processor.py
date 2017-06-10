@@ -6,8 +6,8 @@ import argparse
 
 parser = argparse.ArgumentParser(description="PDP-11 ISA Simulator")
 
-parser.add_argument('-i', action="store", dest="inputFile", default="")
-parser.add_argument('-v', action="store_true", dest="verbose", default=False)
+parser.add_argument('-i', action="store", dest="inputFile", default="", help="Set input filename for object code")
+parser.add_argument('-v', action="store_true", dest="verbose", default=False, help="Enable verbose mode")
 
 args = parser.parse_args()
 
@@ -16,7 +16,8 @@ MEM_DEBUG = False
 DATA_FETCH_DEBUG = False
 REGFILE_DEBUG = False
 BRANCH_DEBUG = False
-TOP_DEBUG = True
+TOP_DEBUG = False
+verbose = args.verbose
 
 def toByteArray(data):
     operand = bytearray(2)
@@ -56,7 +57,12 @@ if(debug):
     print("IR =", IR)
 decodedInstruction = decodeStage.decodeInstruction(IR)
 
-if(debug):
+if(verbose):
+    print("\n")
+    regFile.printRegFile()
+    cond_code = ALU.get_condition(ALU)
+    print("Condition code: N:%s Z:%s V:%s C:%s " %(cond_code[0], cond_code[1], cond_code[2], cond_code[3]))
+if(debug | verbose):
     decodedInstruction.printInstructionData()
 
 while(decodedInstruction.getMnemonic() != "HALT"): 
@@ -109,14 +115,19 @@ while(decodedInstruction.getMnemonic() != "HALT"):
         print("IR =", IR)
     decodedInstruction = decodeStage.decodeInstruction(IR)
 
-    if(debug):
+    if(verbose):
+        print("\n")
+        regFile.printRegFile()
+        cond_code = ALU.get_condition(ALU)
+        print("Condition code: N:%s Z:%s V:%s C:%s " %(cond_code[0], cond_code[1], cond_code[2], cond_code[3]))
+
+    if(debug | verbose):
         decodedInstruction.printInstructionData()
 
 if(debug):
-    print("Program has halted")
-    regFile.printRegFile()
+    print("\nProgram has halted\n")
 
-print("Instructions Executed: %d" %(mem.getInstructionCount()))
+print("\nInstructions Executed: %d" %(mem.getInstructionCount()))
 mem.memoryRead(0, 0)
 mem.memoryRead(2, 0)
 mem.memoryRead(4, 0)
