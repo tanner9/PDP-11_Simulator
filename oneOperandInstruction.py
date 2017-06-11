@@ -7,6 +7,8 @@ class oneOperandInstruction:
         self.mode = (instructionValue>>3)&0x7
         self.reg = instructionValue&0o7
         self.opCode = (instructionValue>>6)&0x1ff
+        if((instructionValue>>3) == 16):
+            self.opCode = 16
         if(self.opCode == 3 or self.opCode == 67):
             self.size = "word"
         else:
@@ -45,6 +47,8 @@ class oneOperandInstruction:
             self.mnemonic = "SoT" 
         elif(self.opCode == 0o1):
             self.mnemonic = "JMP" 
+        elif(self.opCode == 0o20):
+            self.mnemonic = "RTS"
         elif((self.opCode >> 3) == 4):
             self.mnemonic = "JSR"
         else:

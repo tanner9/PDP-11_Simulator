@@ -9,7 +9,7 @@ class decodeStage:
 	def decodeInstruction(self,instructionValue):
 		if((instructionValue>>12) == 0x7):
 			instruction = nopInstruction()
-		elif((((instructionValue>>11)&0xf) == 0x1) or ((instructionValue>>6) == 3) or ((instructionValue>>6) == 67)):
+		elif((((instructionValue>>11)&0xf) == 0x1) or ((instructionValue>>6) == 3) or ((instructionValue>>6) == 67) or ((instructionValue>>3) == 16) or ((instructionValue>>6) == 1)):
 			instruction = oneOperandInstruction(instructionValue)
 		elif((instructionValue>>8) == 0):
 			instruction = zeroOperandInstruction(instructionValue)

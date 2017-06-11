@@ -75,9 +75,10 @@ while(decodedInstruction.getMnemonic() != "HALT"):
     if(debug):
         print("Fetched operands: ", operand0, ", ", operand1)
     if(decodedInstruction.getMnemonic() == "JMP"):
+        data = int((operand0[0]<<16)+operand0[1]) # convert bytearray to int
         if(debug):
-            print("Jumping to address %o" %operand0)
-        regFile.writeReg(7, operand0)
+            print("Jumping to address %o" %data)
+        regFile.writeReg(7, data)
     elif(decodedInstruction.getMnemonic() == "JSR"):
         reg = decodedInstruction.getOpCode() & 0x7 # Half operand stored in bottom 3 bits of opCode of single operand instruction
         regData = regFile.readReg(reg, 0) # Get contents of reg
@@ -85,7 +86,15 @@ while(decodedInstruction.getMnemonic() != "HALT"):
         mem.memoryWrite(topStack, regData) # push register data onto stack
         incrPC = regFile.readReg(7, 0) # Get PC
         regFile.writeReg(reg, incrPC) # Store incremented PC in register
-        regFile.writeReg(7, operand0) # PC = operand0 passed through instruction
+        data = int((operand0[0]<<16)+operand0[1]) # convert bytearray to int
+        regFile.writeReg(7, data) # PC = operand0 passed through instruction
+    elif(decodedInstruction.getMnemonic() == "RTS"):
+        reg = decodedInstruction.getReg()[0] #returns reg and mode. Only reg is valid here
+        NPC = regFile.readReg(reg, 0) # Get PC to return to
+        regFile.writeReg(7, NPC) # PC = [Reg]
+        stackpointer = regFile.readReg(6, 2) # Pop top of stack
+        data = mem.memoryRead(stackpointer, 0)
+        regFile.writeReg(reg, data) # Write value from top of stack into reg
     elif(decodedInstruction.getType() != "branch"):
         op = decodedInstruction.getMnemonic()
         if(debug):
