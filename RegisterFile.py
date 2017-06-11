@@ -5,7 +5,7 @@ class RegisterFile():
         self.debug = debug
 
        
-    def readReg(self, register, mode):
+    def readReg(self, register, mode, isByte=0): # isByte is used for byte operations using auto increment or decrement. Optionally given
         
         reg = self.sanitizeInput(register)
         if(self.debug):
@@ -14,12 +14,18 @@ class RegisterFile():
 
         if(mode == 2 and reg != "R7" and reg != "R6"):
             data = self.registers[reg]
-            self.registers[reg] = data+1
+            if(isByte):
+                self.registers[reg] = data+1
+            else:
+                self.registers[reg] = data+2
         elif(mode == 3 or mode == 2):
             data = self.registers[reg]
             self.registers[reg] = data + 2
         elif(mode == 4 and reg != "R6"):
-            self.registers[reg] = (self.registers[reg]) - 1
+            if(isByte):
+                self.registers[reg] = (self.registers[reg]) - 1
+            else:
+                self.registers[reg] = (self.registers[reg]) - 2
             data = self.registers[reg]
         elif(mode == 5 or mode == 4):
             self.registers[reg] = (self.registers[reg]) - 2
