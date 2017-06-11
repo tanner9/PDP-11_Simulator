@@ -37,9 +37,12 @@ class RegisterFile():
             self.printRegOct(reg)
         return data
 
-    def writeReg(self,register, data):
+    def writeReg(self,register, data, isByte = 0):
         reg = self.sanitizeInput(register)
-        self.registers[reg] = data
+        if(isByte):
+            self.registers[reg] = (self.registers[reg] & 0xFF00)+data
+        else:
+            self.registers[reg] = data
         if(self.debug):
             print("write reg")
             self.printRegOct(reg)

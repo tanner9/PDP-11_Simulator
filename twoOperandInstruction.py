@@ -63,6 +63,9 @@ class twoOperandInstruction:
     def getType(self):
         return self.type
 
+    def getSize(self):
+        return self.size
+
     def printInstruction(self):
         print("%s %d, %d" %(self.mnemonic, self.dstReg, self.srcReg))
 

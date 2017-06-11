@@ -68,7 +68,11 @@ if(debug | verbose):
 while(decodedInstruction.getMnemonic() != "HALT"): 
     if(debug):   
         print("Fetching operands for instruction")
-    operands = dataFetch.fetchData(decodedInstruction)
+    if((decodedInstruction.getNumOperands() > 0) and decodedInstruction.getSize() == "byte"):
+        isByte = True
+    else:
+        isByte = False
+    operands = dataFetch.fetchData(decodedInstruction, isByte)
     numOperands = operands[0]
     operand0 = toByteArray(operands[1])
     operand1 = toByteArray(operands[2])
@@ -99,7 +103,13 @@ while(decodedInstruction.getMnemonic() != "HALT"):
         op = decodedInstruction.getMnemonic()
         if(debug):
         	print("ALU operands: %s & %s; OP: %s" % (operand0, operand1, op))
-        result = ALU.execute(ALU, op, operand0, operand1)
+        if(isByte):
+            ALUop = op+"B"
+        else:
+            ALUop = op
+        result = ALU.execute(ALU, ALUop, operand0, operand1)
+        if(isByte):
+            result = result & 0xFF
         if(debug):
             cond_code = ALU.get_condition(ALU)
             print("Condition code: N:%s Z:%s V:%s C:%s " %(cond_code[0], cond_code[1], cond_code[2], cond_code[3]))
@@ -108,13 +118,19 @@ while(decodedInstruction.getMnemonic() != "HALT"):
         writeBackAddress = dataFetch.getLastAddress()
         if(decodedInstruction.getNumOperands() > 0 and op != "CMP" and op != "BIT"):
             if(decodedInstruction.getDstMode() == 0):
-                regFile.writeReg(writeBackAddress, result)
                 if(debug):
                     print("Writing back to regfile")
+                if(op == "MOV"): # movb is the only byte instruction to write back to whole register
+                    isByte = False
+                regFile.writeReg(writeBackAddress, result, isByte)
             else:
-                mem.memoryWrite(writeBackAddress, result)
                 if(debug):
                     print("Writing back to memory")
+                if(isByte):
+                    mem.memoryWriteByte(writeBackAddress, result)
+                else:
+                    mem.memoryWrite(writeBackAddress, result)
+                
     else:
         op = decodedInstruction.getMnemonic()
         offset = decodedInstruction.getOffset()

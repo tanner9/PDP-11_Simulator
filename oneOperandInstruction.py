@@ -87,6 +87,9 @@ class oneOperandInstruction:
     def getOpCode(self):
         return self.opCode
 
+    def getSize(self):
+        return self.size
+
     def printInstructionData(self):
         x = 'W' if (self.size == "word") else 'B'
         print("Opcode: %d, Op: %s, Reg: %d, Mode: %d, Type: %s " %(self.opCode, self.mnemonic, self.reg, self.mode, x))
