@@ -831,6 +831,8 @@ class ALU:
             self.__condition_car = True
         
     def __movb(self):
+
+        self.byte_integer = self.byte_integer_second
     
         if self.byte_integer == 0: 
             self.__condition_zer = True

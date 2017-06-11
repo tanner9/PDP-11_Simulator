@@ -25,6 +25,15 @@ def toByteArray(data):
     operand[0] = (data >> 8) & 0xFF
     return operand
 
+def sign_extend(data):
+    sign_bit = data>>7 # bit 8 is signed bit
+    mask = 0x8000 >> 7 # {1, 15'b0} sra 7 times. All right shifts in python are arithmetic
+    if(sign_bit):
+        return mask|data
+    else:
+        return data&0xFF
+
+
 if(MASTER_DEBUG == False):
     MEM_DEBUG = False
     DATA_FETCH_DEBUG = False
@@ -121,6 +130,8 @@ while(decodedInstruction.getMnemonic() != "HALT"):
                 if(debug):
                     print("Writing back to regfile")
                 if(op == "MOV"): # movb is the only byte instruction to write back to whole register
+                    if(isByte):
+                        result = sign_extend(result)#sign extend to fill word
                     isByte = False
                 regFile.writeReg(writeBackAddress, result, isByte)
             else:
