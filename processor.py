@@ -74,10 +74,18 @@ while(decodedInstruction.getMnemonic() != "HALT"):
     operand1 = toByteArray(operands[2])
     if(debug):
         print("Fetched operands: ", operand0, ", ", operand1)
-    if(decodedInstruction.getMnemonic == "JMP"):
+    if(decodedInstruction.getMnemonic() == "JMP"):
         if(debug):
             print("Jumping to address %o" %operand0)
         regFile.writeReg(7, operand0)
+    elif(decodedInstruction.getMnemonic() == "JSR"):
+        reg = decodedInstruction.getOpCode() & 0x7 # Half operand stored in bottom 3 bits of opCode of single operand instruction
+        regData = regFile.readReg(reg, 0) # Get contents of reg
+        topStack = regFile.readReg(6, 4) #move top of stack
+        mem.memoryWrite(topStack, regData) # push register data onto stack
+        incrPC = regFile.readReg(7, 0) # Get PC
+        regFile.writeReg(reg, incrPC) # Store incremented PC in register
+        regFile.writeReg(7, operand0) # PC = operand0 passed through instruction
     elif(decodedInstruction.getType() != "branch"):
         op = decodedInstruction.getMnemonic()
         if(debug):
@@ -132,6 +140,6 @@ if(debug):
     print("\nProgram has halted\n")
 
 print("\nInstructions Executed: %d" %(mem.getInstructionCount()))
-mem.memoryRead(0, 0)
-mem.memoryRead(2, 0)
-mem.memoryRead(4, 0)
+print(mem.memoryRead(0, 0))
+print(mem.memoryRead(2, 0))
+print(mem.memoryRead(4, 0))

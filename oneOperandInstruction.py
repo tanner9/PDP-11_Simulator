@@ -45,6 +45,8 @@ class oneOperandInstruction:
             self.mnemonic = "SoT" 
         elif(self.opCode == 0o1):
             self.mnemonic = "JMP" 
+        elif((self.opCode >> 3) == 4):
+            self.mnemonic = "JSR"
         else:
             self.mnemonic = "ERROR"
 
@@ -77,6 +79,9 @@ class oneOperandInstruction:
 
     def getType(self):
         return self.type
+
+    def getOpCode(self):
+        return self.opCode
 
     def printInstructionData(self):
         x = 'W' if (self.size == "word") else 'B'
