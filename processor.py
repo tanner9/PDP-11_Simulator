@@ -8,6 +8,7 @@ parser = argparse.ArgumentParser(description="PDP-11 ISA Simulator")
 
 parser.add_argument('-i', action="store", dest="inputFile", default="", help="Set input filename for object code")
 parser.add_argument('-v', action="store_true", dest="verbose", default=False, help="Enable verbose mode")
+parser.add_argument('-s', action="store_true", dest="singleStep", default=False, help="Enable single step")
 
 args = parser.parse_args()
 
@@ -18,6 +19,7 @@ REGFILE_DEBUG = False
 BRANCH_DEBUG = False
 TOP_DEBUG = False
 verbose = args.verbose
+singleStep = args.singleStep
 
 def toByteArray(data):
     operand = bytearray(2)
@@ -73,8 +75,13 @@ if(verbose):
     print("Condition code: N:%s Z:%s V:%s C:%s " %(cond_code[0], cond_code[1], cond_code[2], cond_code[3]))
 if(debug | verbose):
     decodedInstruction.printInstructionData()
-
+user_input = ""
 while(decodedInstruction.getMnemonic() != "HALT"): 
+    while(singleStep == True and user_input != 's'):
+        user_input = input('\nEnter "s" to continue single stepping or "run" to execute the rest of the program: ')
+        if(user_input == "run"):
+            singleStep = False
+    user_input = ""
     if(debug):   
         print("Fetching operands for instruction")
     if((decodedInstruction.getNumOperands() > 0) and decodedInstruction.getSize() == "byte"):
