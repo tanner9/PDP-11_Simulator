@@ -8,7 +8,7 @@ class twoOperandInstruction:
         self.dstReg = instructionValue&0x7
         self.srcMode = (instructionValue>>9)&0x7
         self.srcReg = (instructionValue>>6)&0x7
-        self.opCode = (instructionValue>>12)&0x1f
+        self.opCode = (instructionValue>>12)&0x7
         if(self.opCode == 6 or self.opCode == 14):
             self.size = "word"
         else:
