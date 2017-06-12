@@ -80,7 +80,7 @@ class Memory(object):
         if(self.debug):
             print("Attempting to read byte from address %s" %(oct(address)))
         memReadData = self.mem[address]
-        self.traceWrite(typeOf, address)            
+        self.traceWrite(typeOf, address)          
         if(self.debug):
             print("MemRead from addr %s. Data = (%d)_10 = (%s)_8" %
                   (oct(address), memReadData, oct(memReadData)))

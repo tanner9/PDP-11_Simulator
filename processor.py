@@ -12,12 +12,12 @@ parser.add_argument('-s', action="store_true", dest="singleStep", default=False,
 
 args = parser.parse_args()
 
-MASTER_DEBUG = True
-MEM_DEBUG = False
-DATA_FETCH_DEBUG = False
-REGFILE_DEBUG = False
+MASTER_DEBUG = False
+MEM_DEBUG = True
+DATA_FETCH_DEBUG = True
+REGFILE_DEBUG = True
 BRANCH_DEBUG = False
-TOP_DEBUG = False
+TOP_DEBUG = True
 verbose = args.verbose
 singleStep = args.singleStep
 
@@ -106,8 +106,8 @@ while(decodedInstruction.getMnemonic() != "HALT"):
         mem.memoryWrite(topStack, regData) # push register data onto stack
         incrPC = regFile.readReg(7, 0) # Get PC
         regFile.writeReg(reg, incrPC) # Store incremented PC in register
-        data = int((operand0[0]<<16)+operand0[1]) # convert bytearray to int
-        regFile.writeReg(7, data) # PC = operand0 passed through instruction
+        address = dataFetch.getLastAddress() # Effective address is address to jump to
+        regFile.writeReg(7, address) # PC = operand0 passed through instruction
     elif(decodedInstruction.getMnemonic() == "RTS"):
         reg = decodedInstruction.getReg()[0] #returns reg and mode. Only reg is valid here
         NPC = regFile.readReg(reg, 0) # Get PC to return to
