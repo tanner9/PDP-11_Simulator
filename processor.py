@@ -183,6 +183,3 @@ if(debug):
     print("\nProgram has halted\n")
 
 print("\nInstructions Executed: %d" %(mem.getInstructionCount()))
-print(mem.memoryRead(0, 0))
-print(mem.memoryRead(2, 0))
-print(mem.memoryRead(4, 0))

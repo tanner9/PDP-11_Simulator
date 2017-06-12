@@ -13,33 +13,33 @@ class branchStage:
         if(op == "BR"):
             return True
         elif(op == "BNE"):
-            return (condition[0] == 0)
+            return (condition[0] == 0) # Z=0
         elif(op == "BEQ"):
-            return (condition[0] == 0)
+            return (condition[0] == 1) # Z=1
         elif(op == "BGE"):
-            return ((condition[3] & condition[2]) == 0)
+            return (condition[3] == condition[2]) # N xor V = 0
         elif(op == "BLT"):
-            return (condition[3] & condition[2])
+            return (condition[3] != condition[2]) # N xor V = 1
         elif(op == "BGT"):
-            return (((condition[3] & condition[2]) or condition[0]) == 0)
+            return (((condition[3] != condition[2]) or condition[0]) == 0) # (N xor V) or Z = 0
         elif(op == "BLE"):
-            return ((condition[3] & condition[2]) or condition[0])
+            return ((condition[3] != condition[2]) or condition[0]) #(N xor V) or Z = 1
         elif(op == "BPL"):
-            return ((condition[3]) == 0)
+            return ((condition[3]) == 0) # N = 0
         elif(op == "BMI"):
-            return (condition[3])
+            return (condition[3]) # N =1
         elif(op == "BHI"):
-            return ((condition[1] or condition[0]) == 0)
+            return ((condition[1] or condition[0]) == 0) # C or Z = 0
         elif(op == "BLOS"):
-            return (condition[1] or condition[0])
+            return (condition[1] or condition[0]) # C or Z = 1
         elif(op == "BVC"):
-            return (condition[2] == 0)
+            return (condition[2] == 0) # V = 0
         elif(op == "BVS"):
-            return (condition[2])
+            return (condition[2]) # V = 1
         elif(op == "BHIS/BCC"):
-            return (condition[1] == 0)
+            return (condition[1] == 0) # C = 0
         elif(op == "BLO/BCS"):
-            return (condition[1])
+            return (condition[1]) # C = 1
         else:
             print("Unknown branch op passed")
             return False
