@@ -1,3 +1,9 @@
+# branchInstruction.py
+# Author: Tanner Shephard
+# Desciption: Decodes and holds data for any branch instruction. Value is given as a number
+#             and then all relevant variables are written via shifts and masks
+
+
 class branchInstruction:
 
     def __init__(self, instructionValue):

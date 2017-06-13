@@ -1,3 +1,11 @@
+# processor.py
+# Author: Tanner Shephard
+# Description: Top Level module. Instantiates all stages of the processor and passes debug switches down
+# 			   during initialization. Contains data fetch and write-back as well as some individual 
+#			   instruction logic for special instructions. 
+
+
+
 from dataFetchStage import *
 from decodeInstruction import *
 from ALU import *
@@ -76,7 +84,7 @@ if(verbose):
 if(debug | verbose):
     decodedInstruction.printInstructionData()
 user_input = ""
-while(decodedInstruction.getMnemonic() != "HALT"): 
+while(decodedInstruction.getMnemonic() != "HALT"): #Start looping through instructions until HALT is received
     while(singleStep == True and user_input != 's'):
         user_input = input('\nEnter "s" to continue single stepping or "run" to execute the rest of the program: ')
         if(user_input == "run"):

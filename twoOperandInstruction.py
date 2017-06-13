@@ -1,3 +1,10 @@
+# twoOperandInstruction.py
+# Author: Tanner Shephard
+# Description: Decodes and holds data for any double operand instruction. Value 
+#              is given as a number and then all relevant variables are written 
+#              via shifts and masks
+
+
 class twoOperandInstruction:
 
     def __init__(self,instructionValue):

@@ -1,3 +1,10 @@
+# dataFetchStage.py
+# Author: Tanner Shephard
+# Description: Fetches operands for every instruction. Primarily uses the mode and register numbers. 
+# 			   Return data is given as byte arrays. All effective address calculation and addressing
+#		       modes are addressed in this file
+
+
 from RegisterFile import *
 from Memory import *
 

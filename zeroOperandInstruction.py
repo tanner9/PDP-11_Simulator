@@ -1,3 +1,9 @@
+# zeroOperandInstruction.py
+# Author: Tanner Shephard
+# Description: Decodes and holds data for any zero operand instruction. Value 
+#              is given as a number and then all relevant variables are written 
+#              via shifts and masks
+
 class zeroOperandInstruction:
 
     def __init__(self, instructionValue):

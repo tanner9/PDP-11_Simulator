@@ -1,3 +1,8 @@
+# branchStage.py
+# Author: Tanner Shephard
+# Description: Takes in condition codes and determines for the given operation
+#              if the branch should be taken or not
+
 class branchStage:
 
     def __init__(self, debug):

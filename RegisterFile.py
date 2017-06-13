@@ -1,3 +1,11 @@
+# RegisterFile.py
+# Authors: Yoshita Nandamuri and Tanner Shephard
+# Description: Implements the register file as a hash. Allows access via read and 
+#              write functions. Registers can be accessed with either R0 or 0 
+#              formats. The input is checked and formatted before being used to 
+#              access the hash
+
+
 class RegisterFile():
      
     def __init__(self, debug, pc=0):

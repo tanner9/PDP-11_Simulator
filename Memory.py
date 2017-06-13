@@ -1,3 +1,9 @@
+# Memory.py
+# Author: Manasvi Prasad
+# Description: Instantiates memory as a single dimensional array. Provides access
+#              through read and write functions. Also opens, closes, and writes to
+#              the trace file. 
+
 from decodeInstruction import *  # used for debug
 
 

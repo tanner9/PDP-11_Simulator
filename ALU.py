@@ -1,4 +1,7 @@
-
+# ALU.py
+# Author: Willow Hill
+# Description: Takes in op code and operands as byte arrays. Outputs a two byte result.
+#              Condition codes are stored internally and can be accessed via a "get" function.
 
 import math
     

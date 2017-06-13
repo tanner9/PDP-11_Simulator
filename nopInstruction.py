@@ -1,3 +1,7 @@
+# nopInstruction.py
+# Author: Tanner Shephard
+# Description: Class for nop instruction. May not be used in final design
+
 class nopInstruction:
 
     def __init__(self):

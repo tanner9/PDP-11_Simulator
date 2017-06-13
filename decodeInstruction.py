@@ -1,3 +1,8 @@
+# decodeInstruction.py
+# Author: Tanner Shephard and Manasvi Prasad
+# Description: Takes in raw instruction value. Decodes type of instruction then passes data into 
+#              the appropriate class to be further decoded
+
 from twoOperandInstruction import *
 from nopInstruction import *
 from oneOperandInstruction import *
