@@ -1,3 +1,7 @@
+# pipelineTest.py
+# Author: Tanner Shephard
+# Description: Integration test of mulitple stages of pipeline
+
 from dataFetchStage import *
 from decodeInstruction import *
 from ALU import *
