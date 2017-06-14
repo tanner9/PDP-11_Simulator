@@ -1,0 +1,3 @@
+MOV 6(PC),R0
+MOV @6(PC),R0
+
