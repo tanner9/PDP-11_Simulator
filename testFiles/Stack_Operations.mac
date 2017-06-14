@@ -1,0 +1,13 @@
+		MOV #2., R3
+		MOV #12., R5
+		MOV #30., R2
+		CMP R2, R5
+		JSR R3, SAVE
+	SAVE:	MOV R5, -(SP)
+		MOV R2, -(SP)
+		INC R5
+		MOV (SP)+,R2
+		MOV (SP)+,R5
+		RTS R3
+	
+
