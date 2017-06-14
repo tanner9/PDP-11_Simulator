@@ -1,0 +1,30 @@
+        MOV #20, R4
+        MOV R2,(R4)
+        
+START:  SUB R2, R4
+        SBC R2
+        SUB @(R4),R2
+        BPL L1
+        INC -(R2)
+        BCS L3
+        
+L1:     CMP R4,#20
+        BNE L2
+        CLR (R2)+
+        DEC @-(R4)
+        BCC L4
+        ROL (R1)+
+        SWAB (R1)
+        
+L2:     TST R2
+        BR L4
+
+L3:     ASL R1
+        ASL R1
+        BVC DONE
+        
+L4:     BIS (R2),(R1)
+        BR DONE
+        
+DONE:   HALT
+        .END START

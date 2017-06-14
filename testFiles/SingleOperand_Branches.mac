@@ -1,0 +1,30 @@
+START:	MOV R3,#-50    
+		COM R3
+		BMI L1
+
+L3:    	INC R3
+		BR DONE
+ 
+L2:     CLR -(R3)
+		TST R3
+		ROL -30(R3)
+		SWAB (R3)
+		ASR R3
+		BR L3
+ 		 
+L4:    	ASR R3
+		BCC L5
+		 
+L1:    	ADD R7, R3
+		ADC R3    
+		NEG R3                                                                                                                                                                      
+		DEC -(R3)
+		
+L5:    	ASR R3
+		BCS L6
+ 
+L6:    	BIT 65536(R0),R3
+		BLT DONE
+ 
+DONE: 	HALT
+		.END START
