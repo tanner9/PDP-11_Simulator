@@ -1,0 +1,22 @@
+START:  MOV R1, #200
+        MOV R1, R2
+        DEC R2
+        CMP R2, #199
+        BHI J1
+        BLOS J3
+        
+J2:     DEC (R2)
+        CLR@(R2)+
+        BLO J5
+        
+J3:     DEC R7
+        INC @(R1)+
+        TST R2
+    
+J5:     ROL @(R2)+
+        BHIS J2
+    
+J1:     SWAB R2
+        ASR R2
+        
+J4:     HALT
