@@ -1,0 +1,8 @@
+	MOV #63., R4
+	MOV #-63., R5
+	ADD R4, R5
+	CMP #0., R5
+	BEQ END
+	END:	HALT
+	ADD #20., R5
+
